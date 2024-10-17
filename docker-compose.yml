@@ -1,28 +1,38 @@
 services:
-  api:
-    image: lucasbenhur_motorcyclemaintenance_api
-    container_name: lucasbenhur_motorcyclemaintenance_api
+  apigateway:
+    image: apigateway
+    container_name: apigateway
     build:
       context: .
-      dockerfile: ./src/LucasBenHur.MotorcycleMaintenance.Api/Dockerfile
+      dockerfile: ./src/Gateway/ApiGateway/Dockerfile
     ports:
       - "80:80"
+    depends_on:
+      - motorcycleservice
+      - rentservice
+      - deliverymanservice
     restart: always
-  worker:
-    image: lucasbenhur_motorcyclemaintenance_worker
-    container_name: lucasbenhur_motorcyclemaintenance_worker
+
+  motorcycleservice:
+    image: motorcycleservice
+    container_name: motorcycleservice
     build:
       context: .
-      dockerfile: ./src/LucasBenHur.MotorcycleMaintenance.Worker/Dockerfile
+      dockerfile: ./src/Services/MotorcycleService/Dockerfile
     restart: always
-  rabbitmq:
-    image: rabbitmq:3-management
-    container_name: lucasbenhur_motorcyclemaintenance_rabbitmq
-    hostname: lucasbenhur_motorcyclemaintenance_rabbitmq
-    ports:
-      - "8080:15672"
-      - "5662:5672"
-    environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
+
+  rentservice:
+    image: rentservice
+    container_name: rentservice
+    build:
+      context: .
+      dockerfile: ./src/Services/RentService/Dockerfile
+    restart: always
+
+  deliverymanservice:
+    image: deliverymanservice
+    container_name: deliverymanservice
+    build:
+      context: .
+      dockerfile: ./src/Services/DeliveryManService/Dockerfile
     restart: always
