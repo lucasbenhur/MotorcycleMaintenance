@@ -1,4 +1,4 @@
-namespace Worker
+﻿namespace Worker
 {
     public class Program
     {

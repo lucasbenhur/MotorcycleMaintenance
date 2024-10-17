@@ -1,9 +1,9 @@
-using Microsoft.AspNetCore.Mvc;
+ï»¿using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
     [ApiController]
-    [Tags("locação")]
+    [Tags("locaÃ§Ã£o")]
     [Route("locacao")]
     public class RentController : ControllerBase
     {
