@@ -1,26 +1,24 @@
-version: '3.8'
-
 services:
   api:
-    image: lucasbenhur_api
-    container_name: lucasbenhur_api
+    image: lucasbenhur_motorcyclemaintenance_api
+    container_name: lucasbenhur_motorcyclemaintenance_api
     build:
       context: .
-      dockerfile: ./src/Api/Dockerfile
+      dockerfile: ./src/LucasBenHur.MotorcycleMaintenance.Api/Dockerfile
     ports:
       - "80:80"
     restart: always
   worker:
-    image: lucasbenhur_worker
-    container_name: lucasbenhur_worker
+    image: lucasbenhur_motorcyclemaintenance_worker
+    container_name: lucasbenhur_motorcyclemaintenance_worker
     build:
       context: .
-      dockerfile: ./src/Worker/Dockerfile
+      dockerfile: ./src/LucasBenHur.MotorcycleMaintenance.Worker/Dockerfile
     restart: always
   rabbitmq:
     image: rabbitmq:3-management
-    container_name: lucasbenhur_rabbitmq
-    hostname: lucasbenhur_rabbitmq
+    container_name: lucasbenhur_motorcyclemaintenance_rabbitmq
+    hostname: lucasbenhur_motorcyclemaintenance_rabbitmq
     ports:
       - "8080:15672"
       - "5662:5672"
