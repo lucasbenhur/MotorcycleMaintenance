@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Rent.Controllers
+namespace Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Tags("locação")]
+    [Route("locacao")]
     public class RentController : ControllerBase
     {
         private readonly ILogger<RentController> _logger;
@@ -15,9 +16,10 @@ namespace Rent.Controllers
         }
 
         [HttpGet]
-        public OkObjectResult Get()
+        public IActionResult Get()
         {
-            return Ok(new { Teste = "Teste" });
+            _logger.LogInformation("Hello, World!");
+            return Ok("Hello, World!");
         }
     }
 }

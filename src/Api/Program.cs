@@ -1,5 +1,7 @@
 
-namespace Gateway
+using Microsoft.OpenApi.Models;
+
+namespace Api
 {
     public class Program
     {
@@ -12,7 +14,15 @@ namespace Gateway
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Sistema de Manutenção de Motos",
+                    Version = "v1"
+                });
+            });
 
             var app = builder.Build();
 
@@ -26,7 +36,6 @@ namespace Gateway
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

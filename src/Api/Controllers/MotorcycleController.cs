@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Motorcycle.Controllers
+namespace Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Tags("motos")]
+    [Route("motos")]
     public class MotorcycleController : ControllerBase
     {
         private readonly ILogger<MotorcycleController> _logger;
@@ -15,9 +16,10 @@ namespace Motorcycle.Controllers
         }
 
         [HttpGet]
-        public OkObjectResult Get()
+        public IActionResult Get()
         {
-            return Ok(new { Teste = "Teste" });
+            _logger.LogInformation("Hello, World!");
+            return Ok("Hello, World!");
         }
     }
 }

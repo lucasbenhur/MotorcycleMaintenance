@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace DeliveryMan.Controllers
+namespace Api.Controllers
 {
     [ApiController]
+    [Tags("entregadores")]
     [Route("entregadores")]
     public class DeliveryManController : ControllerBase
     {
@@ -15,9 +16,10 @@ namespace DeliveryMan.Controllers
         }
 
         [HttpGet]
-        public OkObjectResult Get()
+        public IActionResult Get()
         {
-            return Ok(new { Teste = "Teste" });
+            _logger.LogInformation("Hello, World!");
+            return Ok("Hello, World!");
         }
     }
 }
