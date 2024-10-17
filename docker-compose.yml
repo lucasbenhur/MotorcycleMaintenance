@@ -1,15 +1,17 @@
+version: '3.8'
+
 services:
   api:
-    image: lucasbenhur_api:latest
+    image: lucasbenhur_api
     container_name: lucasbenhur_api
     build:
       context: .
       dockerfile: ./src/Api/Dockerfile
     ports:
-      - "5000:80"
+      - "80:80"
     restart: always
   worker:
-    image: lucasbenhur_worker:latest
+    image: lucasbenhur_worker
     container_name: lucasbenhur_worker
     build:
       context: .
@@ -17,13 +19,12 @@ services:
     restart: always
   rabbitmq:
     image: rabbitmq:3-management
-    container_name: lucasbenhur_rabbit
-    hostname: lucasbenhur_rabbit
+    container_name: lucasbenhur_rabbitmq
+    hostname: lucasbenhur_rabbitmq
     ports:
       - "8080:15672"
       - "5662:5672"
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
-      RABBITMQ_DEFAULT_VHOST: lucasbenhur
     restart: always
