@@ -1,47 +1,33 @@
+
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
-namespace GatewayApi
+namespace ApiGateway
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-            new WebHostBuilder()
-            .UseKestrel(options =>
-            {
-                var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-                if (env != "Development")
-                {
-                    options.ListenAnyIP(80);
-                }
+            var builder = WebApplication.CreateBuilder(args);
 
-            })
-            .UseContentRoot(Directory.GetCurrentDirectory())
-            .ConfigureAppConfiguration((hostingContext, config) =>
-            {
-                config
-                    .SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
-                    .AddJsonFile("appsettings.json", true, true)
-                    .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", true, true)
-                    .AddJsonFile("ocelot.json")
-                    .AddEnvironmentVariables();
-            })
-            .ConfigureServices(s =>
-            {
-                s.AddOcelot();
-            })
-            .ConfigureLogging((hostingContext, logging) =>
-            {
-                //add your logging
-            })
-            .UseIISIntegration()
-            .Configure(app =>
-            {
-                app.UseOcelot().Wait();
-            })
-            .Build()
-            .Run();
+            builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
+
+            builder.Services.AddOcelot();
+
+            var app = builder.Build();
+
+            app.UseHttpsRedirection();
+
+            app.UseAuthorization();
+
+            app.MapControllers();
+
+            app.UseOcelot().Wait();
+
+            if (!app.Environment.IsDevelopment())
+                app.Run("http://*:80");
+
+            app.Run();
         }
     }
 }

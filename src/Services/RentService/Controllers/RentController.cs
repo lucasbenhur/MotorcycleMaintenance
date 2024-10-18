@@ -1,9 +1,13 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Rent.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
+    [Tags("locação")]
+#if DEBUG
+    [Route("locacao")]
+#else
+    [Route("")]
+#endif
     public class RentController : ControllerBase
     {
         private readonly ILogger<RentController> _logger;

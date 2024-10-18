@@ -1,13 +1,12 @@
 ﻿using Microsoft.OpenApi.Models;
 
-namespace Rent
+namespace DeliveryMenService
 {
     public class Program
     {
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
 
@@ -15,7 +14,7 @@ namespace Rent
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Serviço de Locação",
+                    Title = "Serviço de Entregadores",
                     Version = "v1"
                 });
             });
@@ -30,7 +29,7 @@ namespace Rent
                     {
                         foreach (var path in swaggerDoc.Paths.ToList())
                         {
-                            var adjustedPath = $"/locacao{path.Key}".TrimEnd('/');
+                            var adjustedPath = $"/entregadores{path.Key}".TrimEnd('/');
 
                             swaggerDoc.Paths[adjustedPath] = path.Value;
                             swaggerDoc.Paths.Remove(path.Key);
@@ -48,9 +47,9 @@ namespace Rent
                 var path = string.Empty;
 
                 if (!app.Environment.IsDevelopment())
-                    path = "/locacao";
+                    path = "/entregadores";
 
-                c.SwaggerEndpoint($"{path}/swagger/v1/swagger.json", "Locação API v1");
+                c.SwaggerEndpoint($"{path}/swagger/v1/swagger.json", "Entregadores API v1");
             });
 
             app.UseHttpsRedirection();

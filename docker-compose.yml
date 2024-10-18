@@ -1,3 +1,9 @@
+version: '3.8'
+
+networks:
+  motorcycle_maintenance:
+    driver: bridge
+
 services:
   apigateway:
     image: apigateway
@@ -10,8 +16,10 @@ services:
     depends_on:
       - motorcycleservice
       - rentservice
-      - deliverymanservice
+      - deliverymenservice
     restart: always
+    networks:
+      - motorcycle_maintenance
 
   motorcycleservice:
     image: motorcycleservice
@@ -20,6 +28,8 @@ services:
       context: .
       dockerfile: ./src/Services/MotorcycleService/Dockerfile
     restart: always
+    networks:
+      - motorcycle_maintenance
 
   rentservice:
     image: rentservice
@@ -28,11 +38,15 @@ services:
       context: .
       dockerfile: ./src/Services/RentService/Dockerfile
     restart: always
+    networks:
+      - motorcycle_maintenance
 
-  deliverymanservice:
-    image: deliverymanservice
-    container_name: deliverymanservice
+  deliverymenservice:
+    image: deliverymenservice
+    container_name: deliverymenservice
     build:
       context: .
-      dockerfile: ./src/Services/DeliveryManService/Dockerfile
+      dockerfile: ./src/Services/DeliveryMenService/Dockerfile
     restart: always
+    networks:
+      - motorcycle_maintenance
