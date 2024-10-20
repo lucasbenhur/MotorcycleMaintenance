@@ -40,7 +40,7 @@ namespace MotorcycleService.Api.EventBusConsumer
             }
             finally
             {
-                _logger.LogInformation("Consumidor do Evento Cadastrar Moto completado para o Id {Id}", context.Message.Id);
+                _logger.LogInformation("Consumidor do Evento Cadastrar Moto finalizado para o Id {Id}", context.Message.Id);
             }
         }
     }
