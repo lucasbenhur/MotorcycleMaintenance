@@ -39,17 +39,17 @@ namespace MotorcycleService.Api.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> CreateMotorcycle([FromBody] CreateMotorcycleCommand? createMotorcycleCommand)
+        public async Task<IActionResult> Create([FromBody] CreateMotorcycleCommand? createMotorcycleCommand)
         {
             if (createMotorcycleCommand is null)
                 return BadRequest(new MessageResponse());
 
             var motorcycle = await _mediator.Send<MotorcycleResponse>(createMotorcycleCommand);
 
-            if (motorcycle is not null)
-                return Created(string.Empty, null);
-            else
+            if (motorcycle is null)
                 return BadRequest(new MessageResponse(_serviceContext.Notification));
+
+            return Created(string.Empty, null);
         }
 
         [HttpGet]
@@ -57,10 +57,29 @@ namespace MotorcycleService.Api.Controllers
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(ICollection<MotorcycleResponse>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<ICollection<MotorcycleResponse>>> GetAll([FromQuery] GetAllMotorcycleSpecParams specParams)
+        public async Task<IActionResult> GetAll([FromQuery] GetAllMotorcycleSpecParams specParams)
         {
             var query = new GetAllMotorcyclesQuery(specParams);
             return Ok(await _mediator.Send<ICollection<MotorcycleResponse>>(query));
+        }
+
+        [HttpPut("{id}/placa")]
+        [SwaggerOperation(Summary = "Modificar a placa de uma moto")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Update([FromRoute] string id, [FromBody] UpdateMotorcycleCommand? updateMotorcycleCommand)
+        {
+            if (updateMotorcycleCommand is null)
+                return BadRequest(new MessageResponse());
+
+            updateMotorcycleCommand.Id = id;
+
+            if (!await _mediator.Send<bool>(updateMotorcycleCommand))
+                return BadRequest(new MessageResponse(_serviceContext.Notification));
+
+            return Ok(new MessageResponse("Placa modificada com sucesso"));
         }
 
         [HttpGet("{id}")]
@@ -70,7 +89,7 @@ namespace MotorcycleService.Api.Controllers
         [ProducesResponseType(typeof(MotorcycleResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<MotorcycleResponse>> GetById([FromRoute] string id)
+        public async Task<IActionResult> GetById([FromRoute] string id)
         {
             var query = new GetMotorcycleByIdQuery(id);
             var motorcycle = await _mediator.Send<MotorcycleResponse>(query);
@@ -82,6 +101,22 @@ namespace MotorcycleService.Api.Controllers
                 return NotFound(new MessageResponse("Moto não encontrada"));
 
             return Ok(motorcycle);
+        }
+
+        [HttpDelete("{id}")]
+        [SwaggerOperation(Summary = "Remover uma moto")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Delete([FromRoute] string id)
+        {
+            var deleteMotorcycleCommand = new DeleteMotorcycleCommand(id);
+
+            if (!await _mediator.Send<bool>(deleteMotorcycleCommand))
+                return BadRequest(new MessageResponse(_serviceContext.Notification));
+
+            return Ok();
         }
     }
 }

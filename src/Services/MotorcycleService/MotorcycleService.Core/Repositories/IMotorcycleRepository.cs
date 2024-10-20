@@ -9,7 +9,7 @@ namespace MotorcycleService.Core.Repositories
         Task<Motorcycle> GetByPlateAsync(string plate);
         Task<Motorcycle> GetAsync(string id);
         Task<ICollection<Motorcycle>> GetAllAsync(GetAllMotorcycleSpecParams specParams);
-        //Task<bool> UpdateMotorcycle(Motorcycle motorcycle);
-        //Task<bool> DeleteMotorcycle(string id);
+        Task<bool> UpdateAsync(Motorcycle motorcycle);
+        Task<bool> DeleteAsync(string id);
     }
 }

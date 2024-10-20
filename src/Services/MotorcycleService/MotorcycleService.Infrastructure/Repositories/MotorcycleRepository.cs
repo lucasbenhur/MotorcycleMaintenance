@@ -56,5 +56,23 @@ namespace MotorcycleService.Infrastructure.Repositories
                 .Find(filter)
                 .ToListAsync();
         }
+
+        public async Task<bool> UpdateAsync(Motorcycle motorcycle)
+        {
+            var updatedMotorcycle = await _context
+                .Motorcycles
+                .ReplaceOneAsync(m => m.Id.ToUpper() == motorcycle.Id.ToUpper(), motorcycle);
+
+            return updatedMotorcycle.IsAcknowledged;
+        }
+
+        public async Task<bool> DeleteAsync(string id)
+        {
+            var deletedMotorcycle = await _context
+                .Motorcycles
+                .DeleteOneAsync(m => m.Id.ToUpper() == id.ToUpper());
+
+            return deletedMotorcycle.IsAcknowledged;
+        }
     }
 }

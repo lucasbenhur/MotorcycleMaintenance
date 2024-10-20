@@ -23,5 +23,7 @@ namespace MotorcycleService.Core.Entities
         public int Year { get; internal set; }
         public string Model { get; internal set; }
         public string Plate { get; internal set; }
+
+        public void UpdatePlate(string plate) => Plate = plate.ToUpper();
     }
 }

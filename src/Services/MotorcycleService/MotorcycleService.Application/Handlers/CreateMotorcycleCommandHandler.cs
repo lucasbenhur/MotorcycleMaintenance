@@ -46,7 +46,7 @@ namespace MotorcycleService.Application.Handlers
                 var motorcycleEntity = MotorcycleMapper.Mapper.Map<Motorcycle>(request);
                 var newMotorcycle = await _motorcycleRepository.CreateAsync(motorcycleEntity);
 
-                _logger.LogInformation("Moto Id {Id} cadastrada.", newMotorcycle.Id);
+                _logger.LogInformation("Moto Id {Id} cadastrada", newMotorcycle.Id);
 
                 var createMotorcycleEventMsg = MotorcycleMapper.Mapper.Map<CreateMotorcycleEvent>(newMotorcycle);
                 await _publishEndpoint.Publish(createMotorcycleEventMsg);
@@ -55,7 +55,7 @@ namespace MotorcycleService.Application.Handlers
             }
             catch (Exception ex)
             {
-                var msg = $"Ocorreu um erro ao cadastrar a Moto Id {request.Id}. Detalhes: {ex.Message}.";
+                var msg = $"Ocorreu um erro ao cadastrar a Moto Id {request.Id}. Detalhes: {ex.Message}";
                 _logger.LogError(ex, msg);
                 _serviceContext.AddNotification(msg);
                 return null;
