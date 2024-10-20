@@ -1,52 +1,82 @@
-version: '3.8'
-
 networks:
-  motorcycle_maintenance:
+  motorcyclemaintenance:
     driver: bridge
 
 services:
-  apigateway:
-    image: apigateway
-    container_name: apigateway
+  gateway-api:
+    image: gateway-api
+    container_name: gateway-api
     build:
       context: .
-      dockerfile: ./src/Gateway/ApiGateway/Dockerfile
+      dockerfile: ./src/Gateway/GateWay.Api/Dockerfile
     ports:
       - "80:80"
     depends_on:
-      - motorcycleservice
-      - rentservice
-      - deliverymenservice
+      - deliveryman-api
+      - motorcycle-api
+      - rent-api      
     restart: always
     networks:
-      - motorcycle_maintenance
+      - motorcyclemaintenance
 
-  motorcycleservice:
-    image: motorcycleservice
-    container_name: motorcycleservice
+  deliveryman-api:
+    image: deliveryman-api
+    container_name: deliveryman-api
     build:
       context: .
-      dockerfile: ./src/Services/MotorcycleService/Dockerfile
+      dockerfile: ./src/Services/DeliveryManService/DeliveryManService.Api/Dockerfile
     restart: always
     networks:
-      - motorcycle_maintenance
+      - motorcyclemaintenance
+    depends_on:
+      - mongodb
 
-  rentservice:
-    image: rentservice
-    container_name: rentservice
+  motorcycle-api:
+    image: motorcycle-api
+    container_name: motorcycle-api
     build:
       context: .
-      dockerfile: ./src/Services/RentService/Dockerfile
+      dockerfile: ./src/Services/MotorcycleService/MotorcycleService.Api/Dockerfile
     restart: always
     networks:
-      - motorcycle_maintenance
+      - motorcyclemaintenance
+    depends_on:
+      - mongodb
+      - rabbitmq
 
-  deliverymenservice:
-    image: deliverymenservice
-    container_name: deliverymenservice
+  rent-api:
+    image: rent-api
+    container_name: rent-api
     build:
       context: .
-      dockerfile: ./src/Services/DeliveryMenService/Dockerfile
+      dockerfile: ./src/Services/RentService/RentService.Api/Dockerfile
     restart: always
     networks:
-      - motorcycle_maintenance
+      - motorcyclemaintenance
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - motorcyclemaintenance
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - motorcyclemaintenance
+
+volumes:
+  mongo_data:
+    driver: local
