@@ -43,13 +43,13 @@ namespace MotorcycleService.Infrastructure.Repositories
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<ICollection<Motorcycle>> GetAllAsync(MotorcycleSpecParams motorcycleSpecParams)
+        public async Task<ICollection<Motorcycle>> GetAllAsync(GetAllMotorcycleSpecParams specParams)
         {
             var builder = Builders<Motorcycle>.Filter;
             var filter = builder.Empty;
 
-            if (!string.IsNullOrWhiteSpace(motorcycleSpecParams.Plate))
-                filter &= builder.Where(m => m.Plate.ToUpper() == motorcycleSpecParams.Plate.ToUpper());
+            if (!string.IsNullOrWhiteSpace(specParams.Plate))
+                filter &= builder.Where(m => m.Plate.ToUpper() == specParams.Plate.ToUpper());
 
             return await _context
                 .Motorcycles

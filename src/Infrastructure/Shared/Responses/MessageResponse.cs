@@ -2,14 +2,14 @@
 
 namespace Shared.Responses
 {
-    public class BadRequestResponse
+    public class MessageResponse
     {
-        public BadRequestResponse()
+        public MessageResponse()
         {
             Message = "Dados inválidos";
         }
 
-        public BadRequestResponse(string message)
+        public MessageResponse(string message)
         {
             Message = message;
         }

@@ -68,12 +68,17 @@ namespace MotorcycleService.Api
                 {
                     c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
                     {
-                        foreach (var path in swaggerDoc.Paths.ToList())
+                        var adjustedPaths = new Dictionary<string, OpenApiPathItem>();
+                        foreach (var path in swaggerDoc.Paths)
                         {
                             var adjustedPath = $"/motos{path.Key}".TrimEnd('/');
+                            adjustedPaths[adjustedPath] = path.Value;
+                        }
 
-                            swaggerDoc.Paths[adjustedPath] = path.Value;
-                            swaggerDoc.Paths.Remove(path.Key);
+                        swaggerDoc.Paths.Clear();
+                        foreach (var path in adjustedPaths)
+                        {
+                            swaggerDoc.Paths.Add(path.Key, path.Value);
                         }
                     });
                 });

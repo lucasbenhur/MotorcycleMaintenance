@@ -38,27 +38,48 @@ namespace MotorcycleService.Api.Controllers
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(BadRequestResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> CreateMotorcycle([FromBody] PublishEventCreateMotorcycleCommand? createMotorcycleEventCommand)
         {
             if (createMotorcycleEventCommand is null)
-                return BadRequest(new BadRequestResponse("Informe um payload válido!"));
+                return BadRequest(new MessageResponse("Informe um payload válido!"));
 
             if (await _mediator.Send<bool>(createMotorcycleEventCommand))
-                return CreatedAtAction(nameof(CreateMotorcycle), createMotorcycleEventCommand);
+                return Created(string.Empty, null);
             else
-                return BadRequest(new BadRequestResponse(_serviceContext.Notification));
+                return BadRequest(new MessageResponse(_serviceContext.Notification));
         }
 
         [HttpGet]
         [SwaggerOperation(Summary = "Consultar motos existentes")]
         [Consumes("application/json")]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<ICollection<MotorcycleResponse>>> GetAll([FromQuery] MotorcycleSpecParams motorcycleSpecParams)
+        [ProducesResponseType(typeof(ICollection<MotorcycleResponse>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<ICollection<MotorcycleResponse>>> GetAll([FromQuery] GetAllMotorcycleSpecParams specParams)
         {
-            var query = new GetAllMotorcyclesQuery(motorcycleSpecParams);
+            var query = new GetAllMotorcyclesQuery(specParams);
             return Ok(await _mediator.Send<ICollection<MotorcycleResponse>>(query));
+        }
+
+        [HttpGet("{id}")]
+        [SwaggerOperation(Summary = "Consultar motos existentes por id")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(MotorcycleResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<MotorcycleResponse>> GetById([FromRoute] string id)
+        {
+            var query = new GetMotorcycleByIdQuery(id);
+            var motorcycle = await _mediator.Send<MotorcycleResponse>(query);
+
+            if (_serviceContext.HasNotification())
+                return BadRequest(new MessageResponse(_serviceContext.Notification));
+
+            if (motorcycle is null)
+                return NotFound(new MessageResponse("Moto não encontrada"));
+
+            return Ok(motorcycle);
         }
     }
 }
