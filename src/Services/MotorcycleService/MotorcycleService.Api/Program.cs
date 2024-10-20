@@ -6,6 +6,7 @@ using MotorcycleService.Application.Handlers;
 using MotorcycleService.Core.Repositories;
 using MotorcycleService.Infrastructure.Data;
 using MotorcycleService.Infrastructure.Repositories;
+using Shared.ServiceContext;
 using System.Reflection;
 
 namespace MotorcycleService.Api
@@ -27,6 +28,7 @@ namespace MotorcycleService.Api
                     Description = "Sistema de Manutenção de Motos",
                     Version = "v1"
                 });
+                c.EnableAnnotations();
             });
 
             builder.Services.AddAutoMapper(typeof(Program).Assembly);
@@ -39,6 +41,7 @@ namespace MotorcycleService.Api
 
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies));
 
+            builder.Services.AddScoped<IServiceContext, ServiceContext>();
             builder.Services.AddScoped<IMotorcycleContext, MotorcycleContext>();
             builder.Services.AddScoped<IMotorcycleRepository, MotorcycleRepository>();
             builder.Services.AddScoped<CreateMotorcycleConsumer>();

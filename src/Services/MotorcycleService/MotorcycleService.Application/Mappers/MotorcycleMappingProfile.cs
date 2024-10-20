@@ -12,7 +12,7 @@ namespace MotorcycleService.Application.Mappers
         {
             CreateMap<CreateMotorcycleEvent, PublishEventCreateMotorcycleCommand>().ReverseMap();
             CreateMap<CreateMotorcycleCommand, CreateMotorcycleEvent>().ReverseMap();
-            CreateMap<CreateMotorcycleResponse, Motorcycle>().ReverseMap();
+            CreateMap<MotorcycleResponse, Motorcycle>().ReverseMap();
         }
     }
 }

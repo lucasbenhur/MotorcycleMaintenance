@@ -29,7 +29,7 @@ namespace MotorcycleService.Api.EventBusConsumer
                 if (context.Message.Year == 2024)
                 {
                     var createMotorcycleCommand = MotorcycleMapper.Mapper.Map<CreateMotorcycleCommand>(context.Message);
-                    await _mediator.Send<CreateMotorcycleResponse>(createMotorcycleCommand);
+                    await _mediator.Send<MotorcycleResponse>(createMotorcycleCommand);
                 }
             }
             catch (Exception ex)
