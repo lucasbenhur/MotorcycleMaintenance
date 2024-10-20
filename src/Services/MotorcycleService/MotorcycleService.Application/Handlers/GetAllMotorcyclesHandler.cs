@@ -4,6 +4,7 @@ using MotorcycleService.Application.Mappers;
 using MotorcycleService.Application.Queries;
 using MotorcycleService.Application.Responses;
 using MotorcycleService.Core.Repositories;
+using Shared.ServiceContext;
 
 namespace MotorcycleService.Application.Handlers
 {
@@ -11,13 +12,16 @@ namespace MotorcycleService.Application.Handlers
     {
         private readonly IMotorcycleRepository _motorcycleRepository;
         private readonly ILogger<GetAllMotorcyclesHandler> _logger;
+        private readonly IServiceContext _serviceContext;
 
         public GetAllMotorcyclesHandler(
             IMotorcycleRepository motorcycleRepository,
-            ILogger<GetAllMotorcyclesHandler> logger)
+            ILogger<GetAllMotorcyclesHandler> logger,
+            IServiceContext serviceContext)
         {
             _motorcycleRepository = motorcycleRepository;
             _logger = logger;
+            _serviceContext = serviceContext;
         }
 
         public async Task<ICollection<MotorcycleResponse>> Handle(GetAllMotorcyclesQuery request, CancellationToken cancellationToken)
@@ -29,8 +33,9 @@ namespace MotorcycleService.Application.Handlers
             }
             catch (Exception ex)
             {
-                var msg = string.Format("Ocorreu um erro ao consultar motos existentes . Detalhes: {Message}.", ex.Message);
+                var msg = $"Ocorreu um erro ao consultar motos. Detalhes: {ex.Message}.";
                 _logger.LogError(ex, msg);
+                _serviceContext.AddNotification(msg);
                 return Array.Empty<MotorcycleResponse>();
             }
         }

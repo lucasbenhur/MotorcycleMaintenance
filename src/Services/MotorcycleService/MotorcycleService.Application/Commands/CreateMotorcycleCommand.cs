@@ -1,15 +1,25 @@
 ﻿using MediatR;
 using MotorcycleService.Application.Responses;
+using System.Text.Json.Serialization;
 
 namespace MotorcycleService.Application.Commands
 {
     public class CreateMotorcycleCommand : IRequest<MotorcycleResponse>
     {
-        public string Id { get; set; }
-        public int Year { get; set; }
-        public string Model { get; set; }
-        private string _plate { get; set; }
-        public string Plate
+        [JsonPropertyName("identificador")]
+        public string? Id { get; set; }
+
+        [JsonPropertyName("ano")]
+        public int? Year { get; set; }
+
+        [JsonPropertyName("modelo")]
+        public string? Model { get; set; }
+
+        [JsonIgnore]
+        private string? _plate { get; set; }
+
+        [JsonPropertyName("placa")]
+        public string? Plate
         {
             get
             {
@@ -17,7 +27,7 @@ namespace MotorcycleService.Application.Commands
             }
             set
             {
-                _plate = value.ToUpper();
+                _plate = value?.ToUpper();
             }
         }
     }

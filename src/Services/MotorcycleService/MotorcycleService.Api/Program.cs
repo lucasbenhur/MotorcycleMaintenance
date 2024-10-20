@@ -6,6 +6,7 @@ using MotorcycleService.Application.Handlers;
 using MotorcycleService.Core.Repositories;
 using MotorcycleService.Infrastructure.Data;
 using MotorcycleService.Infrastructure.Repositories;
+using Shared.Notifications.Extensions;
 using Shared.ServiceContext;
 using System.Reflection;
 
@@ -41,6 +42,7 @@ namespace MotorcycleService.Api
 
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies));
 
+            builder.Services.AddNotification();
             builder.Services.AddScoped<IServiceContext, ServiceContext>();
             builder.Services.AddScoped<IMotorcycleContext, MotorcycleContext>();
             builder.Services.AddScoped<IMotorcycleRepository, MotorcycleRepository>();

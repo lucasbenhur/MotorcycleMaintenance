@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using MotorcycleService.Application.Commands;
-using MotorcycleService.Core.Entities;
 
 namespace MotorcycleService.Application.Mappers
 {
@@ -18,14 +16,5 @@ namespace MotorcycleService.Application.Mappers
         });
 
         public static IMapper Mapper => Lazy.Value;
-
-        public static Motorcycle Map(CreateMotorcycleCommand createMotorcycleCommand)
-        {
-            return new Motorcycle(
-                createMotorcycleCommand.Id,
-                createMotorcycleCommand.Year,
-                createMotorcycleCommand.Model,
-                createMotorcycleCommand.Plate);
-        }
     }
 }

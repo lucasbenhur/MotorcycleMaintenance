@@ -39,12 +39,14 @@ namespace MotorcycleService.Api.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> CreateMotorcycle([FromBody] PublishEventCreateMotorcycleCommand? createMotorcycleEventCommand)
+        public async Task<ActionResult> CreateMotorcycle([FromBody] CreateMotorcycleCommand? createMotorcycleCommand)
         {
-            if (createMotorcycleEventCommand is null)
-                return BadRequest(new MessageResponse("Informe um payload válido!"));
+            if (createMotorcycleCommand is null)
+                return BadRequest(new MessageResponse());
 
-            if (await _mediator.Send<bool>(createMotorcycleEventCommand))
+            var motorcycle = await _mediator.Send<MotorcycleResponse>(createMotorcycleCommand);
+
+            if (motorcycle is not null)
                 return Created(string.Empty, null);
             else
                 return BadRequest(new MessageResponse(_serviceContext.Notification));

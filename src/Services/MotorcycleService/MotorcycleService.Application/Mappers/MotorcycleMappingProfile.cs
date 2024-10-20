@@ -10,8 +10,8 @@ namespace MotorcycleService.Application.Mappers
     {
         public MotorcycleMappingProfile()
         {
-            CreateMap<CreateMotorcycleEvent, PublishEventCreateMotorcycleCommand>().ReverseMap();
-            CreateMap<CreateMotorcycleCommand, CreateMotorcycleEvent>().ReverseMap();
+            CreateMap<Motorcycle, CreateMotorcycleCommand>().ReverseMap();
+            CreateMap<CreateMotorcycleEvent, Motorcycle>().ReverseMap();
             CreateMap<MotorcycleResponse, Motorcycle>().ReverseMap();
         }
     }
