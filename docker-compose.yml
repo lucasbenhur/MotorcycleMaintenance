@@ -26,6 +26,8 @@ services:
       context: .
       dockerfile: ./src/Services/DeliveryManService/DeliveryManService.Api/Dockerfile
     restart: always
+    volumes:
+      - cnh_image_data:/app/cnh_image
     networks:
       - motorcyclemaintenance
     depends_on:
@@ -79,4 +81,4 @@ services:
 
 volumes:
   mongo_data:
-    driver: local
+  cnh_image_data:    
