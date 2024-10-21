@@ -49,7 +49,7 @@ namespace DeliveryManService.Application.Handlers
             }
             catch (Exception ex)
             {
-                var msg = $"Ocorreu um erro ao cadastrar o entregador Id {request.Id}. Detalhes: {ex.Message}";
+                var msg = $"Ocorreu um erro ao cadastrar o entregador Id {request.Id}";
                 _logger.LogError(ex, msg);
                 _serviceContext.AddNotification(msg);
                 return false;
@@ -129,7 +129,7 @@ namespace DeliveryManService.Application.Handlers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ocorreu um erro ao armazenar a imagem CNH. Detalhes: {Message}", ex.Message);
+                _logger.LogError(ex, "Ocorreu um erro ao armazenar a imagem CNH");
             }
         }
 

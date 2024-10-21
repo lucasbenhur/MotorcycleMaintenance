@@ -31,7 +31,7 @@ namespace Shared.Notifications.Handlers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ocorreu um erro ao gravar a notificação. Detalhes {Message}", ex.Message);
+                _logger.LogError(ex, "Ocorreu um erro ao gravar a notificação");
                 return null;
             }
         }

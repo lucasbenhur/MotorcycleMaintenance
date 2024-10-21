@@ -55,7 +55,7 @@ namespace MotorcycleService.Application.Handlers
             }
             catch (Exception ex)
             {
-                var msg = $"Ocorreu um erro ao cadastrar a Moto Id {request.Id}. Detalhes: {ex.Message}";
+                var msg = $"Ocorreu um erro ao cadastrar a Moto Id {request.Id}";
                 _logger.LogError(ex, msg);
                 _serviceContext.AddNotification(msg);
                 return null;

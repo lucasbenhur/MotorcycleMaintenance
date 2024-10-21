@@ -15,7 +15,6 @@ namespace MotorcycleService.Application.Commands
         [JsonPropertyName("modelo")]
         public string? Model { get; set; }
 
-        [JsonIgnore]
         private string? _plate { get; set; }
 
         [JsonPropertyName("placa")]

@@ -8,8 +8,7 @@ namespace MotorcycleService.Application.Commands
         [JsonIgnore]
         public string? Id { get; set; }
 
-        [JsonIgnore]
-        public string? _plate { get; set; }
+        private string? _plate { get; set; }
 
         [JsonPropertyName("placa")]
         public string? Plate

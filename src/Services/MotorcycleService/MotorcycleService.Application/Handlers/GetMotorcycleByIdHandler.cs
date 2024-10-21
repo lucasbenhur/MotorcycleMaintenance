@@ -33,7 +33,7 @@ namespace MotorcycleService.Application.Handlers
             }
             catch (Exception ex)
             {
-                var msg = $"Ocorreu um erro ao consultar motos por Id. Detalhes: {ex.Message}";
+                var msg = $"Ocorreu um erro ao consultar motos por Id";
                 _logger.LogError(ex, msg);
                 _serviceContext.AddNotification(msg);
                 return null;
