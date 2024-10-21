@@ -34,10 +34,13 @@ namespace DeliveryManService.Application.Handlers
                 if (!await IsValidAsync(request))
                     return false;
 
-                request.CnhImage = await SaveCnhImageAndGetFilePathAsync(request);
+                var cnhImage = request.CnhImage;
+                var relativePath = GetChnImageRelativePath(request);
+                request.CnhImage = relativePath;
                 var deliveryManEntity = DeliveryManMapper.Mapper.Map<DeliveryMan>(request);
                 await _deliveryManRepository.CreateAsync(deliveryManEntity);
                 _logger.LogInformation("Entregador cadastrado com Id {Id}", request.Id);
+                await SaveCnhImageToLocalStorageAsync(cnhImage, relativePath);
                 return true;
             }
             catch (Exception ex)
@@ -65,20 +68,33 @@ namespace DeliveryManService.Application.Handlers
             return extension == ".png" || extension == ".bmp";
         }
 
-        private async Task<string> SaveCnhImageAndGetFilePathAsync(CreateDeliveryManCommand request)
+        private string GetChnImageRelativePath(CreateDeliveryManCommand request)
         {
             var extension = GetCnhImageExtension(request.CnhImage);
-            var filePath = $"/cnh_image/{request.Id}{extension}";
-            var directory = Path.GetDirectoryName(filePath);
+            return $"cnh_image/{request.Id}{extension}";
+        }
 
-            if (!Directory.Exists(directory))
+        private async Task SaveCnhImageToLocalStorageAsync(string cnhImage, string relativePath)
+        {
+            try
             {
-                Directory.CreateDirectory(directory);
-            }
+                string basePath = AppDomain.CurrentDomain.BaseDirectory;
+                string filePath = Path.Combine(basePath, relativePath);
+                var directory = Path.GetDirectoryName(filePath);
 
-            byte[] imageBytes = Convert.FromBase64String(request.CnhImage);
-            await File.WriteAllBytesAsync(filePath, imageBytes);
-            return filePath;
+                if (!Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+
+                byte[] imageBytes = Convert.FromBase64String(cnhImage);
+                await File.WriteAllBytesAsync(filePath, imageBytes);
+                _logger.LogInformation("Imagem CNH armazenada em {filePath}", filePath);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ocorreu um erro ao armazenar a imagem CNH. Detalhes: {Message}", ex.Message);
+            }
         }
 
         private string GetCnhImageExtension(string cnhImage)
