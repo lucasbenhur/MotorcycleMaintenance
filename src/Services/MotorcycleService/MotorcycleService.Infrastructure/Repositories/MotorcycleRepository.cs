@@ -8,9 +8,9 @@ namespace MotorcycleService.Infrastructure.Repositories
 {
     public class MotorcycleRepository : IMotorcycleRepository
     {
-        public IMotorcycleContext _context { get; }
+        public IMotorcycleDbContext _context { get; }
 
-        public MotorcycleRepository(IMotorcycleContext context)
+        public MotorcycleRepository(IMotorcycleDbContext context)
         {
             _context = context;
         }

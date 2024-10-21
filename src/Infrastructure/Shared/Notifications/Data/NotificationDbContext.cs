@@ -2,13 +2,13 @@
 using MongoDB.Driver;
 using Shared.Notifications.Entities;
 
-namespace Shared.Notifications.Context
+namespace Shared.Notifications.Data
 {
-    public class NotificationContext : INotificationContext
+    public class NotificationDbContext : INotificationDbContext
     {
         public IMongoCollection<Notification> Notifications { get; }
 
-        public NotificationContext(IConfiguration configuration)
+        public NotificationDbContext(IConfiguration configuration)
         {
             var client = new MongoClient(configuration["DatabaseSettings:ConnectionString"]);
             var database = client.GetDatabase(configuration["DatabaseSettings:DatabaseName"]);

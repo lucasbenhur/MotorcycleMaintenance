@@ -1,13 +1,13 @@
-﻿using Shared.Notifications.Context;
+﻿using Shared.Notifications.Data;
 using Shared.Notifications.Entities;
 
 namespace Shared.Notifications.Repositories
 {
     public class NotificationRepository : INotificationRepository
     {
-        public INotificationContext _context { get; }
+        public INotificationDbContext _context { get; }
 
-        public NotificationRepository(INotificationContext context)
+        public NotificationRepository(INotificationDbContext context)
         {
             _context = context;
         }

@@ -44,7 +44,7 @@ namespace MotorcycleService.Api
 
             builder.Services.AddNotification();
             builder.Services.AddScoped<IServiceContext, ServiceContext>();
-            builder.Services.AddScoped<IMotorcycleContext, MotorcycleContext>();
+            builder.Services.AddScoped<IMotorcycleDbContext, MotorcycleDbContext>();
             builder.Services.AddScoped<IMotorcycleRepository, MotorcycleRepository>();
             builder.Services.AddScoped<CreateMotorcycleConsumer>();
 

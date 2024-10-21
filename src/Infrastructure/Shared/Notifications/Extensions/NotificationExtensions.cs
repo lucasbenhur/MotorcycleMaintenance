@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Shared.Notifications.Context;
+using Shared.Notifications.Data;
 using Shared.Notifications.Handlers;
 using Shared.Notifications.Repositories;
 using System.Reflection;
@@ -10,7 +10,7 @@ namespace Shared.Notifications.Extensions
     {
         public static void AddNotification(this IServiceCollection services)
         {
-            services.AddScoped<INotificationContext, NotificationContext>();
+            services.AddScoped<INotificationDbContext, NotificationDbContext>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
 
             var assemblies = new Assembly[]
