@@ -6,11 +6,11 @@ namespace MotorcycleService.Application.Queries
 {
     public class GetAllMotorcyclesQuery : IRequest<ICollection<MotorcycleResponse>>
     {
-        public GetAllMotorcycleSpecParams MotorcycleGetAllSpecParams { get; internal set; }
+        public GetAllMotorcyclesSpecParams GetAllMotorcyclesSpecParams { get; internal set; }
 
-        public GetAllMotorcyclesQuery(GetAllMotorcycleSpecParams specParams)
+        public GetAllMotorcyclesQuery(GetAllMotorcyclesSpecParams specParams)
         {
-            MotorcycleGetAllSpecParams = specParams;
+            GetAllMotorcyclesSpecParams = specParams;
         }
     }
 }

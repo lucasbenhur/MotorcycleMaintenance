@@ -28,7 +28,7 @@ namespace MotorcycleService.Application.Handlers
         {
             try
             {
-                var motorcycles = await _motorcycleRepository.GetAllAsync(request.MotorcycleGetAllSpecParams);
+                var motorcycles = await _motorcycleRepository.GetAllAsync(request.GetAllMotorcyclesSpecParams);
                 return MotorcycleMapper.Mapper.Map<ICollection<MotorcycleResponse>>(motorcycles);
             }
             catch (Exception ex)

@@ -2,14 +2,15 @@
 
 namespace MotorcycleService.Core.Specs
 {
-    public class GetAllMotorcycleSpecParams
+    public class GetAllMotorcyclesSpecParams
     {
-        public GetAllMotorcycleSpecParams()
+        public GetAllMotorcyclesSpecParams()
         {
             Plate = null;
         }
 
-        public GetAllMotorcycleSpecParams(string plate)
+        public GetAllMotorcyclesSpecParams(
+            string? plate = null)
         {
             Plate = plate;
         }

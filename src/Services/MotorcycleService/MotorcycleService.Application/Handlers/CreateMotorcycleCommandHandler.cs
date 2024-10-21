@@ -89,7 +89,7 @@ namespace MotorcycleService.Application.Handlers
 
         private async Task<bool> ExistsPlateAsync(string plate)
         {
-            var specParams = new GetAllMotorcycleSpecParams(plate);
+            var specParams = new GetAllMotorcyclesSpecParams(plate);
             var query = new GetAllMotorcyclesQuery(specParams);
             return (await _mediator.Send<ICollection<MotorcycleResponse>>(query)).Any();
         }

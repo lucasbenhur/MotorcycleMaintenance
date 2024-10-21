@@ -1,9 +1,13 @@
 ﻿using DeliveryManService.Application.Commands;
 using DeliveryManService.Application.Mappers;
+using DeliveryManService.Application.Queries;
+using DeliveryManService.Application.Responses;
 using DeliveryManService.Core.Entities;
 using DeliveryManService.Core.Repositories;
+using DeliveryManService.Core.Specs;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Shared.Extensions;
 using Shared.ServiceContext;
 
 namespace DeliveryManService.Application.Handlers
@@ -54,10 +58,42 @@ namespace DeliveryManService.Application.Handlers
 
         private async Task<bool> IsValidAsync(CreateDeliveryManCommand request)
         {
+            if (string.IsNullOrWhiteSpace(request.Id))
+                _serviceContext.AddNotification("O campo identificador é obrigatório");
+            else if (await ExistsIdAsync(request.Id))
+                _serviceContext.AddNotification($"O identificador {request.Id} já existe");
+
+            if (string.IsNullOrWhiteSpace(request.Name))
+                _serviceContext.AddNotification("O campo nome é obrigatório");
+
+            if (string.IsNullOrWhiteSpace(request.Cnpj))
+                _serviceContext.AddNotification("O campo cnpj é obrigatório");
+            else if (!request.Cnpj.All(char.IsDigit))
+                _serviceContext.AddNotification("O campo cnpj deve conter apenas números");
+            else if (!request.Cnpj.IsValidCnpj())
+                _serviceContext.AddNotification("O campo cnpj é inválido");
+            else if (await ExistsCnpjAsync(request.Cnpj))
+                _serviceContext.AddNotification($"O cnpj {request.Cnpj} já existe");
+
+            if (request.BirthDate is null)
+                _serviceContext.AddNotification("O campo data_nascimento é obrigatório");
+
+            if (string.IsNullOrWhiteSpace(request.CnhNumber))
+                _serviceContext.AddNotification("O campo numero_cnh é obrigatório");
+            else if (!request.CnhNumber.All(char.IsDigit))
+                _serviceContext.AddNotification("O campo numero_cnh deve conter apenas números");
+            else if (await ExistsCnhNumberAsync(request.CnhNumber))
+                _serviceContext.AddNotification($"O cnpj {request.Cnpj} já existe");
+
+            if (string.IsNullOrWhiteSpace(request.CnhType))
+                _serviceContext.AddNotification("O campo tipo_cnh é obrigatório");
+            else if (request.CnhType.ToUpper() != "A" && request.CnhType.ToUpper() != "B" && request.CnhType.ToUpper() != "A+B")
+                _serviceContext.AddNotification("O campo tipo_cnh é inválido. Os valores permitidos são A, B, A+B");
+
             if (string.IsNullOrEmpty(request.CnhImage))
-                _serviceContext.AddNotification("Informe a imagem da CNH.");
+                _serviceContext.AddNotification("O campo imagem_cnh é obrigatório");
             else if (!IsValidCnhImageExtension(request.CnhImage))
-                _serviceContext.AddNotification("Extensão da imagem da CNH é inválida. São permitidas apenas .png e .bmp");
+                _serviceContext.AddNotification("Extensão do arquivo no campo imagem_cnh é inválido. São permitidos apenas .png e .bmp");
 
             return !_serviceContext.HasNotification();
         }
@@ -111,6 +147,27 @@ namespace DeliveryManService.Application.Handlers
                 return ".bmp";
 
             return null;
+        }
+
+        private async Task<bool> ExistsIdAsync(string id)
+        {
+            var specParams = new GetAllDeliveryMenSpecParams(id: id);
+            var query = new GetAllDeliveryMenQuery(specParams);
+            return (await _mediator.Send<ICollection<DeliveryManResponse>>(query)).Any();
+        }
+
+        private async Task<bool> ExistsCnhNumberAsync(string cnhNumber)
+        {
+            var specParams = new GetAllDeliveryMenSpecParams(cnhNumber: cnhNumber);
+            var query = new GetAllDeliveryMenQuery(specParams);
+            return (await _mediator.Send<ICollection<DeliveryManResponse>>(query)).Any();
+        }
+
+        private async Task<bool> ExistsCnpjAsync(string cnpj)
+        {
+            var specParams = new GetAllDeliveryMenSpecParams(cnpj: cnpj);
+            var query = new GetAllDeliveryMenQuery(specParams);
+            return (await _mediator.Send<ICollection<DeliveryManResponse>>(query)).Any();
         }
     }
 }

@@ -43,7 +43,7 @@ namespace MotorcycleService.Infrastructure.Repositories
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<ICollection<Motorcycle>> GetAllAsync(GetAllMotorcycleSpecParams specParams)
+        public async Task<ICollection<Motorcycle>> GetAllAsync(GetAllMotorcyclesSpecParams specParams)
         {
             var builder = Builders<Motorcycle>.Filter;
             var filter = builder.Empty;

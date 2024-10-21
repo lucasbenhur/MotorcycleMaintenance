@@ -19,7 +19,7 @@ namespace DeliveryManService.Core.Entities
             Cnpj = cnpj;
             BirthDate = birthDate;
             CnhNumber = cnhNumber;
-            CnhType = cnhType;
+            CnhType = cnhType.ToUpper();
             CnhImage = cnhImage;
         }
 

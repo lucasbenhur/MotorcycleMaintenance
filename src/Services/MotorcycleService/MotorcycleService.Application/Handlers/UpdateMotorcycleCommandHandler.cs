@@ -85,7 +85,7 @@ namespace MotorcycleService.Application.Handlers
 
         private async Task<bool> ExistsPlateAsync(UpdateMotorcycleCommand request)
         {
-            var specParams = new GetAllMotorcycleSpecParams(request.Plate);
+            var specParams = new GetAllMotorcyclesSpecParams(request.Plate);
             var query = new GetAllMotorcyclesQuery(specParams);
             return (await _mediator.Send<ICollection<MotorcycleResponse>>(query)).Any(x => x.Id.ToUpper() != request.Id.ToUpper());
         }

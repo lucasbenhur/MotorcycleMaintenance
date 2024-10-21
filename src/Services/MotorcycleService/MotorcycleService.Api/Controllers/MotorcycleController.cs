@@ -57,7 +57,7 @@ namespace MotorcycleService.Api.Controllers
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(ICollection<MotorcycleResponse>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll([FromQuery] GetAllMotorcycleSpecParams specParams)
+        public async Task<IActionResult> GetAll([FromQuery] GetAllMotorcyclesSpecParams specParams)
         {
             var query = new GetAllMotorcyclesQuery(specParams);
             return Ok(await _mediator.Send<ICollection<MotorcycleResponse>>(query));

@@ -20,8 +20,10 @@ namespace DeliveryManService.Application.Commands
         [JsonPropertyName("numero_cnh")]
         public string? CnhNumber { get; set; }
 
+        private string? _cnhType { get; set; }
+
         [JsonPropertyName("tipo_cnh")]
-        public string? CnhType { get; set; }
+        public string? CnhType { get { return _cnhType; } set { _cnhType = value?.ToUpper(); } }
 
         [JsonPropertyName("imagem_cnh")]
         public string? CnhImage { get; set; }
