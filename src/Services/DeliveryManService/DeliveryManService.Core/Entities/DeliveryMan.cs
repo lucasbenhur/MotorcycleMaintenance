@@ -12,7 +12,7 @@ namespace DeliveryManService.Core.Entities
             DateTime birthDate,
             string cnhNumber,
             string cnhType,
-            string cnhImagePath)
+            string cnhImage)
         {
             Id = id;
             Name = name;
@@ -20,7 +20,7 @@ namespace DeliveryManService.Core.Entities
             BirthDate = birthDate;
             CnhNumber = cnhNumber;
             CnhType = cnhType;
-            CnhImagePath = cnhImagePath;
+            CnhImage = cnhImage;
         }
 
         [BsonId]
@@ -31,6 +31,6 @@ namespace DeliveryManService.Core.Entities
         public DateTime BirthDate { get; internal set; }
         public string CnhNumber { get; internal set; }
         public string CnhType { get; internal set; }
-        public string CnhImagePath { get; internal set; }
+        public string CnhImage { get; internal set; }
     }
 }

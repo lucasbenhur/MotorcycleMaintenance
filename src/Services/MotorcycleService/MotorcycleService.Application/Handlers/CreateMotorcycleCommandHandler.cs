@@ -65,24 +65,24 @@ namespace MotorcycleService.Application.Handlers
         private async Task<bool> IsValidAsync(CreateMotorcycleCommand request)
         {
             if (string.IsNullOrWhiteSpace(request.Id))
-                _serviceContext.AddNotification("O campo Identificador é obrigatório");
+                _serviceContext.AddNotification("O campo identificador é obrigatório");
             else if (await ExistsIdAsync(request.Id))
-                _serviceContext.AddNotification($"O Identificador {request.Id} já existe");
+                _serviceContext.AddNotification($"O identificador {request.Id} já existe");
 
             if (!request.Year.HasValue)
-                _serviceContext.AddNotification("O campo Ano é obrigatório");
+                _serviceContext.AddNotification("O campo ano é obrigatório");
             else if (request.Year.GetValueOrDefault() <= 0)
-                _serviceContext.AddNotification("Informe um Ano válido!");
+                _serviceContext.AddNotification("Informe um ano válido!");
 
             if (string.IsNullOrWhiteSpace(request.Model))
-                _serviceContext.AddNotification("O campo Modelo é obrigatório");
+                _serviceContext.AddNotification("O campo modelo é obrigatório");
 
             if (string.IsNullOrWhiteSpace(request.Plate))
-                _serviceContext.AddNotification("O campo Placa é obrigatório");
+                _serviceContext.AddNotification("O campo placa é obrigatório");
             else if (!request.Plate.IsPlate())
-                _serviceContext.AddNotification("Informe uma Placa válida!");
+                _serviceContext.AddNotification("Informe uma placa válida!");
             else if (await ExistsPlateAsync(request.Plate))
-                _serviceContext.AddNotification($"A Placa {request.Plate} já existe");
+                _serviceContext.AddNotification($"A placa {request.Plate} já existe");
 
             return !_serviceContext.HasNotification();
         }

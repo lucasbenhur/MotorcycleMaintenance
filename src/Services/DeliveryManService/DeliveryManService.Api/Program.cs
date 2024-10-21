@@ -1,4 +1,10 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using DeliveryManService.Application.Handlers;
+using DeliveryManService.Core.Repositories;
+using DeliveryManService.Infrastructure.Data;
+using DeliveryManService.Infrastructure.Repositories;
+using Microsoft.OpenApi.Models;
+using Shared.ServiceContext;
+using System.Reflection;
 
 namespace DeliveryManService.Api
 {
@@ -19,7 +25,22 @@ namespace DeliveryManService.Api
                     Description = "Sistema de Manutenção de Motos",
                     Version = "v1"
                 });
+                c.EnableAnnotations();
             });
+
+            builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
+            var assemblies = new Assembly[]
+            {
+                Assembly.GetExecutingAssembly(),
+                typeof(CreateDeliveryManCommandHandler).Assembly
+            };
+
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies));
+
+            builder.Services.AddScoped<IServiceContext, ServiceContext>();
+            builder.Services.AddScoped<IDeliveryManDbContext, DeliveryManDbContext>();
+            builder.Services.AddScoped<IDeliveryManRepository, DeliveryManRepository>();
 
             var app = builder.Build();
 
@@ -29,12 +50,17 @@ namespace DeliveryManService.Api
                 {
                     c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
                     {
-                        foreach (var path in swaggerDoc.Paths.ToList())
+                        var adjustedPaths = new Dictionary<string, OpenApiPathItem>();
+                        foreach (var path in swaggerDoc.Paths)
                         {
                             var adjustedPath = $"/entregadores{path.Key}".TrimEnd('/');
+                            adjustedPaths[adjustedPath] = path.Value;
+                        }
 
-                            swaggerDoc.Paths[adjustedPath] = path.Value;
-                            swaggerDoc.Paths.Remove(path.Key);
+                        swaggerDoc.Paths.Clear();
+                        foreach (var path in adjustedPaths)
+                        {
+                            swaggerDoc.Paths.Add(path.Key, path.Value);
                         }
                     });
                 });

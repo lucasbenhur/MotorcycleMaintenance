@@ -12,6 +12,14 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Infrastructure\Shared\Shared.csproj" />
+    <ProjectReference Include="..\DeliveryManService.Application\DeliveryManService.Application.csproj" />
+    <ProjectReference Include="..\DeliveryManService.Core\DeliveryManService.Core.csproj" />
+    <ProjectReference Include="..\DeliveryManService.Infrastructure\DeliveryManService.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
