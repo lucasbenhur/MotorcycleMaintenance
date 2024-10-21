@@ -83,7 +83,7 @@ namespace DeliveryManService.Application.Handlers
             else if (!request.CnhNumber.All(char.IsDigit))
                 _serviceContext.AddNotification("O campo numero_cnh deve conter apenas números");
             else if (await ExistsCnhNumberAsync(request.CnhNumber))
-                _serviceContext.AddNotification($"O cnpj {request.Cnpj} já existe");
+                _serviceContext.AddNotification($"O numero_cnh {request.CnhNumber} já existe");
 
             if (string.IsNullOrWhiteSpace(request.CnhType))
                 _serviceContext.AddNotification("O campo tipo_cnh é obrigatório");
