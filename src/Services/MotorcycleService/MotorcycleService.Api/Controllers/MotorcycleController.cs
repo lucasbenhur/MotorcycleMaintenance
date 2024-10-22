@@ -44,7 +44,7 @@ namespace MotorcycleService.Api.Controllers
             if (createMotorcycleCommand is null)
                 return BadRequest(new MessageResponse());
 
-            var motorcycle = await _mediator.Send<MotorcycleResponse>(createMotorcycleCommand);
+            var motorcycle = await _mediator.Send(createMotorcycleCommand);
 
             if (motorcycle is null)
                 return BadRequest(new MessageResponse(_serviceContext.Notification));
@@ -60,7 +60,7 @@ namespace MotorcycleService.Api.Controllers
         public async Task<IActionResult> GetAll([FromQuery] GetAllMotorcyclesSpecParams specParams)
         {
             var query = new GetAllMotorcyclesQuery(specParams);
-            return Ok(await _mediator.Send<ICollection<MotorcycleResponse>>(query));
+            return Ok(await _mediator.Send(query));
         }
 
         [HttpPut("{id}/placa")]
@@ -76,7 +76,7 @@ namespace MotorcycleService.Api.Controllers
 
             updateMotorcycleCommand.Id = id;
 
-            if (!await _mediator.Send<bool>(updateMotorcycleCommand))
+            if (!await _mediator.Send(updateMotorcycleCommand))
                 return BadRequest(new MessageResponse(_serviceContext.Notification));
 
             return Ok(new MessageResponse("Placa modificada com sucesso"));
@@ -92,7 +92,7 @@ namespace MotorcycleService.Api.Controllers
         public async Task<IActionResult> GetById([FromRoute] string id)
         {
             var query = new GetMotorcycleByIdQuery(id);
-            var motorcycle = await _mediator.Send<MotorcycleResponse>(query);
+            var motorcycle = await _mediator.Send(query);
 
             if (_serviceContext.HasNotification())
                 return BadRequest(new MessageResponse(_serviceContext.Notification));
@@ -113,7 +113,7 @@ namespace MotorcycleService.Api.Controllers
         {
             var deleteMotorcycleCommand = new DeleteMotorcycleCommand(id);
 
-            if (!await _mediator.Send<bool>(deleteMotorcycleCommand))
+            if (!await _mediator.Send(deleteMotorcycleCommand))
                 return BadRequest(new MessageResponse(_serviceContext.Notification));
 
             return Ok();

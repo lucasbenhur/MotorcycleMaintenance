@@ -3,8 +3,8 @@ using RentService.Core.Entities;
 
 namespace RentService.Infrastructure.Data
 {
-    public interface IRentalDbContext
+    public interface IRentDbContext
     {
-        IMongoCollection<Rental> Rentals { get; }
+        IMongoCollection<Rent> Rents { get; }
     }
 }

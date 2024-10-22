@@ -1,22 +1,22 @@
-﻿using RentalService.Core.Repositories;
+﻿using RentService.Core.Repositories;
 using RentService.Core.Entities;
 using RentService.Infrastructure.Data;
 
-namespace RentalService.Infrastructure.Repositories
+namespace RentService.Infrastructure.Repositories
 {
-    public class RentalRepository : IRentalRepository
+    public class RentRepository : IRentRepository
     {
-        public IRentalDbContext _context { get; }
+        public IRentDbContext _context { get; }
 
-        public RentalRepository(IRentalDbContext context)
+        public RentRepository(IRentDbContext context)
         {
             _context = context;
         }
 
-        public async Task<Rental> CreateAsync(Rental rental)
+        public async Task<Rent> CreateAsync(Rent rent)
         {
-            await _context.Rentals.InsertOneAsync(rental);
-            return rental;
+            await _context.Rents.InsertOneAsync(rent);
+            return rent;
         }
     }
 }

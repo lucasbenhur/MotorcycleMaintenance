@@ -1,6 +1,5 @@
 ﻿using DeliveryManService.Application.Commands;
 using DeliveryManService.Application.Queries;
-using DeliveryManService.Application.Responses;
 using DeliveryManService.Core.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -44,7 +43,7 @@ namespace DeliveryManService.Api.Controllers
             if (createDeliveryManCommand is null)
                 return BadRequest(new MessageResponse());
 
-            if (!await _mediator.Send<bool>(createDeliveryManCommand))
+            if (!await _mediator.Send(createDeliveryManCommand))
                 return BadRequest(new MessageResponse(_serviceContext.Notification));
 
             return Created(string.Empty, null);
@@ -63,7 +62,7 @@ namespace DeliveryManService.Api.Controllers
 
             updateDeliveryManCommand.Id = id;
 
-            if (!await _mediator.Send<bool>(updateDeliveryManCommand))
+            if (!await _mediator.Send(updateDeliveryManCommand))
                 return BadRequest(new MessageResponse(_serviceContext.Notification));
 
             return Created(string.Empty, null);
@@ -80,7 +79,7 @@ namespace DeliveryManService.Api.Controllers
         public async Task<IActionResult> GetById([FromRoute] string id)
         {
             var query = new GetDeliveryManByIdQuery(id);
-            var deliveryMan = await _mediator.Send<DeliveryManResponse>(query);
+            var deliveryMan = await _mediator.Send(query);
 
             if (_serviceContext.HasNotification())
                 return BadRequest(new MessageResponse(_serviceContext.Notification));

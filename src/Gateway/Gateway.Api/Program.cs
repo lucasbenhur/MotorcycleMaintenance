@@ -14,8 +14,6 @@ namespace Gateway.Api
 
             var app = builder.Build();
 
-            app.UseHttpsRedirection();
-            app.UseAuthorization();
             app.MapControllers();
             app.UseOcelot().Wait();
 

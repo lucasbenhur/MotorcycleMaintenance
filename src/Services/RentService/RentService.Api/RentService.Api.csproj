@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\RentService.Application\RentService.Application.csproj" />
     <ProjectReference Include="..\RentService.Infrastructure\RentService.Infrastructure.csproj" />
+    <ProjectReference Include="..\RentService.Integrations\RentService.Integrations.csproj" />
   </ItemGroup>
 
 </Project>

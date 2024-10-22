@@ -1,10 +1,10 @@
-﻿using System.Text.Json.Serialization;
-using MediatR;
+﻿using MediatR;
 using RentService.Application.Responses;
+using System.Text.Json.Serialization;
 
 namespace RentService.Application.Commands
 {
-    public class RentMotorcycleCommand : IRequest<RentalResponse?>
+    public class CreateRentCommand : IRequest<RentResponse?>
     {
         [JsonPropertyName("entregador_id")]
         public string? DeliveryManId { get; set; }

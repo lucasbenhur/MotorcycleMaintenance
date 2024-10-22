@@ -3,7 +3,6 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using MotorcycleService.Application.Commands;
 using MotorcycleService.Application.Queries;
-using MotorcycleService.Application.Responses;
 using MotorcycleService.Core.Repositories;
 using MotorcycleService.Core.Specs;
 using Shared.Extensions;
@@ -89,13 +88,13 @@ namespace MotorcycleService.Application.Handlers
         {
             var specParams = new GetAllMotorcyclesSpecParams(request.Plate);
             var query = new GetAllMotorcyclesQuery(specParams);
-            return (await _mediator.Send<ICollection<MotorcycleResponse>>(query)).Any(x => x.Id.ToUpper() != request.Id.ToUpper());
+            return (await _mediator.Send(query)).Any(x => x.Id.ToUpper() != request.Id.ToUpper());
         }
 
         private async Task<bool> ExistsIdAsync(string id)
         {
             var query = new GetMotorcycleByIdQuery(id);
-            return await _mediator.Send<MotorcycleResponse>(query) is not null;
+            return await _mediator.Send(query) is not null;
         }
     }
 }

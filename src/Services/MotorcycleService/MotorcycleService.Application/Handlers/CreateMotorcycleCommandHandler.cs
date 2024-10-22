@@ -91,13 +91,13 @@ namespace MotorcycleService.Application.Handlers
         {
             var specParams = new GetAllMotorcyclesSpecParams(plate);
             var query = new GetAllMotorcyclesQuery(specParams);
-            return (await _mediator.Send<ICollection<MotorcycleResponse>>(query)).Any();
+            return (await _mediator.Send(query)).Any();
         }
 
         private async Task<bool> ExistsIdAsync(string id)
         {
             var query = new GetMotorcycleByIdQuery(id);
-            return await _mediator.Send<MotorcycleResponse>(query) is not null;
+            return await _mediator.Send(query) is not null;
         }
     }
 }

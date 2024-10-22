@@ -1,17 +1,16 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using RentalService.Core.Repositories;
-using RentalService.Infrastructure.Data;
-using RentalService.Infrastructure.Repositories;
+using RentService.Core.Repositories;
 using RentService.Infrastructure.Data;
+using RentService.Infrastructure.Repositories;
 
-namespace RentalService.Infrastructure.Extensions
+namespace RentService.Infrastructure.Extensions
 {
     public static class ServiceRegistration
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         {
-            services.AddSingleton<IRentalDbContext, RentalDbContext>();
-            services.AddSingleton<IRentalRepository, RentalRepository>();
+            services.AddScoped<IRentDbContext, RentDbContext>();
+            services.AddScoped<IRentRepository, RentRepository>();
 
             return services;
         }

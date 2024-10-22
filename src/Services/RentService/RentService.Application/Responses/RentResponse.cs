@@ -1,13 +1,10 @@
-﻿using System.Text.Json.Serialization;
-using MongoDB.Bson.Serialization.Attributes;
-using RentService.Core.Entities;
+﻿using RentService.Core.Entities;
+using System.Text.Json.Serialization;
 
 namespace RentService.Application.Responses
 {
-    public class RentalResponse
+    public class RentResponse
     {
-        [BsonId]
-        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
         [JsonPropertyName("id")]
         public string Id { get; set; } = null!;
 
@@ -27,6 +24,6 @@ namespace RentService.Application.Responses
         public DateTime EstimatedEndDate { get; set; }
 
         [JsonPropertyName("plano")]
-        private RentalPlan Plan { get; set; }
+        private RentPlan Plan { get; set; }
     }
 }

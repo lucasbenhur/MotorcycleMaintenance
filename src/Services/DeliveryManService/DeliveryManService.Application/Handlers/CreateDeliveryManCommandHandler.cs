@@ -1,7 +1,6 @@
 ﻿using DeliveryManService.Application.Commands;
 using DeliveryManService.Application.Mappers;
 using DeliveryManService.Application.Queries;
-using DeliveryManService.Application.Responses;
 using DeliveryManService.Core.Entities;
 using DeliveryManService.Core.Repositories;
 using DeliveryManService.Core.Specs;
@@ -158,21 +157,21 @@ namespace DeliveryManService.Application.Handlers
         {
             var specParams = new GetAllDeliveryMenSpecParams(id: id);
             var query = new GetAllDeliveryMenQuery(specParams);
-            return (await _mediator.Send<ICollection<DeliveryManResponse>>(query)).Any();
+            return (await _mediator.Send(query)).Any();
         }
 
         private async Task<bool> ExistsCnhNumberAsync(string cnhNumber)
         {
             var specParams = new GetAllDeliveryMenSpecParams(cnhNumber: cnhNumber);
             var query = new GetAllDeliveryMenQuery(specParams);
-            return (await _mediator.Send<ICollection<DeliveryManResponse>>(query)).Any();
+            return (await _mediator.Send(query)).Any();
         }
 
         private async Task<bool> ExistsCnpjAsync(string cnpj)
         {
             var specParams = new GetAllDeliveryMenSpecParams(cnpj: cnpj);
             var query = new GetAllDeliveryMenQuery(specParams);
-            return (await _mediator.Send<ICollection<DeliveryManResponse>>(query)).Any();
+            return (await _mediator.Send(query)).Any();
         }
     }
 }

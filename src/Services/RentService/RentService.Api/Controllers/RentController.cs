@@ -35,14 +35,14 @@ namespace RentService.Api.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> RentMotorcycle([FromBody] RentMotorcycleCommand? rentMotorcycleCommand)
+        public async Task<IActionResult> RentMotorcycle([FromBody] CreateRentCommand? createRentCommand)
         {
-            if (rentMotorcycleCommand is null)
+            if (createRentCommand is null)
                 return BadRequest(new MessageResponse());
 
-            var rental = await _mediator.Send(rentMotorcycleCommand);
+            var rent = await _mediator.Send(createRentCommand);
 
-            if (rental is null)
+            if (rent is null)
                 return BadRequest(new MessageResponse(_serviceContext.Notification));
 
             return Created(string.Empty, null);

@@ -80,8 +80,6 @@ namespace DeliveryManService.Api
                 c.SwaggerEndpoint($"{path}/swagger/v1/swagger.json", "Entregadores API v1");
             });
 
-            app.UseHttpsRedirection();
-            app.UseAuthorization();
             app.MapControllers();
 
             if (!app.Environment.IsDevelopment())

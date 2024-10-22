@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 
-namespace RentalService.Core.Entities
+namespace RentService.Core.Entities
 {
     public class BaseEntity
     {

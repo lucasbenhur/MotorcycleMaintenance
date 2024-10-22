@@ -1,9 +1,9 @@
-﻿using System.Reflection;
-using Microsoft.OpenApi.Models;
-using RentalService.Application.Extensions;
-using RentalService.Infrastructure.Extensions;
+﻿using Microsoft.OpenApi.Models;
 using RentService.Application.Commands;
+using RentService.Infrastructure.Extensions;
+using RentService.Integrations.Extensions;
 using Shared.ServiceContext;
+using System.Reflection;
 
 namespace RentService.Api
 {
@@ -24,6 +24,7 @@ namespace RentService.Api
                     Description = "Sistema de Manutenção de Motos",
                     Version = "v1"
                 });
+                c.EnableAnnotations();
             });
 
             builder.Services.AddAutoMapper(typeof(Program).Assembly);
@@ -31,13 +32,13 @@ namespace RentService.Api
             var assemblies = new Assembly[]
             {
                 Assembly.GetExecutingAssembly(),
-                typeof(RentMotorcycleCommand).Assembly
+                typeof(CreateRentCommand).Assembly
             };
 
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies));
 
             builder.Services.AddScoped<IServiceContext, ServiceContext>();
-            builder.Services.AddApplicationServices();
+            builder.Services.AddIntegrationsServices();
             builder.Services.AddInfrastructureServices();
 
             var app = builder.Build();
@@ -57,7 +58,8 @@ namespace RentService.Api
                         }
                     });
                 });
-            } else
+            }
+            else
             {
                 app.UseSwagger();
             }
@@ -72,7 +74,6 @@ namespace RentService.Api
                 c.SwaggerEndpoint($"{path}/swagger/v1/swagger.json", "Locação API v1");
             });
 
-            app.UseHttpsRedirection();
             app.MapControllers();
 
             if (!app.Environment.IsDevelopment())

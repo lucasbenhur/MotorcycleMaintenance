@@ -1,18 +1,16 @@
-﻿using RentalService.Core.Entities;
-
-namespace RentService.Core.Entities
+﻿namespace RentService.Core.Entities
 {
-    public class Rental : BaseEntity
+    public class Rent : BaseEntity
     {
         public string DeliveryManId { get; set; } = null!;
         public string MotorcycleId { get; set; } = null!;
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public DateTime EstimatedEndDate { get; set; }
-        private RentalPlan Plan { get; set; }
+        private RentPlan Plan { get; set; }
     }
 
-    public enum RentalPlan
+    public enum RentPlan
     {
         Seven = 7,
         Fifteen = 15,

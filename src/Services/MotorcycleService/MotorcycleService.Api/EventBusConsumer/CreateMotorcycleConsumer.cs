@@ -2,7 +2,6 @@
 using MassTransit;
 using MediatR;
 using Shared.Notifications.Command;
-using Shared.Notifications.Responses;
 
 namespace MotorcycleService.Api.EventBusConsumer
 {
@@ -31,7 +30,7 @@ namespace MotorcycleService.Api.EventBusConsumer
                     _logger.LogInformation(msg);
 
                     var createNotificationCommand = new CreateNotificationCommand(msg);
-                    await _mediator.Send<NotificationResponse>(createNotificationCommand);
+                    await _mediator.Send(createNotificationCommand);
                 }
             }
             catch (Exception ex)
