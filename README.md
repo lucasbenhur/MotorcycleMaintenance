@@ -10,7 +10,7 @@ Este projeto é uma aplicação baseada em microserviços desenvolvida em .NET C
 Os microsserviços são:
 - **Motos** - Cadastro de Motos, atualização da placa, consulta pela placa ou pelo Id, exclusão de Motos.
 - **Entregadores** - Cadastro de Entregadores e upload da foto da CNH.
-- **Locação** - Cadastro de locação e devolução de Motos para Entregadores e calculo do cuto total do aluguel na devolução.
+- **Locação** - Cadastro de locação e devolução de Motos para Entregadores, calculo do cuto total do aluguel na devolução, consulta de locação pelo Id.
 
 ## Domínio
 
