@@ -4,6 +4,7 @@ using RentService.Application.Commands;
 using RentService.Application.Mappers;
 using RentService.Application.Responses;
 using RentService.Core.Entities;
+using RentService.Core.Enums;
 using RentService.Core.Integrations;
 using RentService.Core.Repositories;
 using Shared.ServiceContext;
@@ -68,9 +69,15 @@ namespace RentService.Application.Handlers
                 _serviceContext.AddNotification("O plano escolhido não é válido");
 
             if (!request.StartDate.HasValue)
-                _serviceContext.AddNotification("A data de início deve ser informada");
+                _serviceContext.AddNotification("O campo data_inicio é obrigatório");
             else if (today.AddDays(1).Date != request.StartDate.Value.Date)
-                _serviceContext.AddNotification("A data de início deve ser o primeiro dia após a data da locação");
+                _serviceContext.AddNotification("A data_inicio deve ser o primeiro dia após a data da locação");
+
+            if (!request.EndDate.HasValue)
+                _serviceContext.AddNotification("O campo data_termino é obrigatório");
+
+            if (!request.EstimatedEndDate.HasValue)
+                _serviceContext.AddNotification("O campo data_previsao_termino é obrigatório");
 
             if (string.IsNullOrWhiteSpace(request.DeliveryManId))
                 _serviceContext.AddNotification("O campo entregador_id deve ser informado");

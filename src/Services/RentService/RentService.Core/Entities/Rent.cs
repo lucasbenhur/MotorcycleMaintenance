@@ -1,21 +1,39 @@
-﻿namespace RentService.Core.Entities
-{
-    public class Rent : BaseEntity
-    {
-        public string DeliveryManId { get; set; } = null!;
-        public string MotorcycleId { get; set; } = null!;
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public DateTime EstimatedEndDate { get; set; }
-        private RentPlan Plan { get; set; }
-    }
+﻿using MongoDB.Bson.Serialization.Attributes;
+using RentService.Core.Enums;
 
-    public enum RentPlan
+namespace RentService.Core.Entities
+{
+    public class Rent
     {
-        Seven = 7,
-        Fifteen = 15,
-        Thirty = 30,
-        FortyFive = 45,
-        Fifty = 50
+        public Rent(
+            string deliveryManId,
+            string motorcycleId,
+            DateTime startDate,
+            DateTime endDate,
+            DateTime estimatedEndDate,
+            RentPlan plan)
+        {
+            DeliveryManId = deliveryManId;
+            MotorcycleId = motorcycleId;
+            StartDate = startDate;
+            EndDate = endDate;
+            EstimatedEndDate = estimatedEndDate;
+            Plan = plan;
+            Id = null;
+            DailyValue = null;
+            ReturnDate = null;
+        }
+
+        [BsonId]
+        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
+        public string? Id { get; set; }
+        public int? DailyValue { get; set; }
+        public string DeliveryManId { get; internal set; }
+        public string MotorcycleId { get; internal set; }
+        public DateTime StartDate { get; internal set; }
+        public DateTime EndDate { get; internal set; }
+        public DateTime EstimatedEndDate { get; internal set; }
+        public RentPlan Plan { get; internal set; }
+        public DateTime? ReturnDate { get; internal set; }
     }
 }

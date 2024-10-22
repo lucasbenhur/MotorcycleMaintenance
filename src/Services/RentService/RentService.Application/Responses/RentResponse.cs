@@ -1,12 +1,14 @@
-﻿using RentService.Core.Entities;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace RentService.Application.Responses
 {
     public class RentResponse
     {
-        [JsonPropertyName("id")]
+        [JsonPropertyName("identificador")]
         public string Id { get; set; } = null!;
+
+        [JsonPropertyName("valor_diaria")]
+        public int? DailyValue { get; set; } = null!;
 
         [JsonPropertyName("entregador_id")]
         public string DeliveryManId { get; set; } = null!;
@@ -23,7 +25,7 @@ namespace RentService.Application.Responses
         [JsonPropertyName("data_previsao_termino")]
         public DateTime EstimatedEndDate { get; set; }
 
-        [JsonPropertyName("plano")]
-        private RentPlan Plan { get; set; }
+        [JsonPropertyName("data_devolucao")]
+        public DateTime? DataDevolucao { get; set; }
     }
 }
