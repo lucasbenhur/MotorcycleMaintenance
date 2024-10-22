@@ -20,9 +20,7 @@ O projeto usa MongoDb com a estrutura de collections abaixo:
 
 ![image](https://github.com/user-attachments/assets/5aeb1c43-b160-48f7-b90d-c17c6bb3710f)
 
-### Projetos
-
-Arquitetura:
+### Arquitetura
 
 ![image](https://github.com/user-attachments/assets/1cec62a2-0118-4c21-a507-35ad02c66723)
 
