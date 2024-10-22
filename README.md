@@ -51,9 +51,9 @@ Após o comando executado com sucesso seu Docker terá a seguinte estrutura de c
 
 ![image](https://github.com/user-attachments/assets/c88f06d2-7563-476e-9dfe-f24f57b99a68)
 
-## Acessando Swagger
+## Documentação - Swagger
 
-- Com os containers em execução no docker é possível acessar os swagger de cada microsserviço em:
+- Com os containers em execução no docker é possível acessar o swagger de cada microsserviço em:
 
 - http://localhost/motos/swagger/index.html
 
@@ -69,7 +69,7 @@ Após o comando executado com sucesso seu Docker terá a seguinte estrutura de c
 
 ## Logs
 
-- Os logs são gerados apenas no cosole da aplicação e não são persistidos.
+- Os logs são gerados apenas no console da aplicação e não são persistidos.
 
 ## Exceções
 
