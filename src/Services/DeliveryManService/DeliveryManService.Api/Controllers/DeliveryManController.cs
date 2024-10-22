@@ -1,4 +1,7 @@
 ﻿using DeliveryManService.Application.Commands;
+using DeliveryManService.Application.Queries;
+using DeliveryManService.Application.Responses;
+using DeliveryManService.Core.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Responses;
@@ -64,6 +67,28 @@ namespace DeliveryManService.Api.Controllers
                 return BadRequest(new MessageResponse(_serviceContext.Notification));
 
             return Created(string.Empty, null);
+        }
+
+        [HttpGet("{id}")]
+        [SwaggerIgnore]
+        [SwaggerOperation(Summary = "Consultar entregadores existentes por id")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(DeliveryMan), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetById([FromRoute] string id)
+        {
+            var query = new GetDeliveryManByIdQuery(id);
+            var deliveryMan = await _mediator.Send<DeliveryManResponse>(query);
+
+            if (_serviceContext.HasNotification())
+                return BadRequest(new MessageResponse(_serviceContext.Notification));
+
+            if (deliveryMan is null)
+                return NotFound(new MessageResponse("Entregador não encontrado"));
+
+            return Ok(deliveryMan);
         }
     }
 }
