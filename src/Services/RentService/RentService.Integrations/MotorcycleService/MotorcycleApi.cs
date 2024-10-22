@@ -28,7 +28,7 @@ namespace RentService.Integrations.MotorcycleService
                 var motorcycle = JsonSerializer.Deserialize<MotorcycleDto>(responseData);
                 return motorcycle;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }

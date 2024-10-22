@@ -26,11 +26,18 @@ namespace RentService.Integrations.DeliveryManService
 
         public async Task<DeliveryManDto?> Get(string id)
         {
-            var response = await _httpClient.GetAsync($"/entregadores/{id}");
-            response.EnsureSuccessStatusCode();
-            string responseData = await response.Content.ReadAsStringAsync();
-            var deliveryMan = JsonSerializer.Deserialize<DeliveryManDto>(responseData);
-            return deliveryMan;
+            try
+            {
+                var response = await _httpClient.GetAsync($"/entregadores/{id}");
+                response.EnsureSuccessStatusCode();
+                string responseData = await response.Content.ReadAsStringAsync();
+                var deliveryMan = JsonSerializer.Deserialize<DeliveryManDto>(responseData);
+                return deliveryMan;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }
