@@ -7,6 +7,11 @@ Sistema de Manutenção de Motos
 
 Este projeto é uma aplicação baseada em microserviços desenvolvida em .NET Core 8.0, utilizando uma arquitetura limpa e boas práticas de design. A aplicação é composta por 3 microserviços, cada um responsável por uma funcionalidade específica, e um API Gateway Ocelot para roteamento de requisições.
 
+Os microsserviços são:
+- **Motos** - Cadastro de Motos, atualização da placa, consulta pela placa ou pelo Id, exclusão de Motos.
+- **Entregadores** - Cadastro de Entregadores e upload da foto da CNH.
+- **Locação** - Cadastro de locação e devolução de Motos para Entregadores e calculo do cuto total do aluguel na devolução.
+
 ## Domínio
 
 ### Banco De Dados
