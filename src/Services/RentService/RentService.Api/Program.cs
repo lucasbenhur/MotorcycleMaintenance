@@ -1,4 +1,9 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using System.Reflection;
+using Microsoft.OpenApi.Models;
+using RentalService.Application.Extensions;
+using RentalService.Infrastructure.Extensions;
+using RentService.Application.Commands;
+using Shared.ServiceContext;
 
 namespace RentService.Api
 {
@@ -21,6 +26,20 @@ namespace RentService.Api
                 });
             });
 
+            builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
+            var assemblies = new Assembly[]
+            {
+                Assembly.GetExecutingAssembly(),
+                typeof(RentMotorcycleCommand).Assembly
+            };
+
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies));
+
+            builder.Services.AddScoped<IServiceContext, ServiceContext>();
+            builder.Services.AddApplicationServices();
+            builder.Services.AddInfrastructureServices();
+
             var app = builder.Build();
 
             if (!app.Environment.IsDevelopment())
@@ -38,8 +57,7 @@ namespace RentService.Api
                         }
                     });
                 });
-            }
-            else
+            } else
             {
                 app.UseSwagger();
             }
@@ -55,7 +73,6 @@ namespace RentService.Api
             });
 
             app.UseHttpsRedirection();
-            app.UseAuthorization();
             app.MapControllers();
 
             if (!app.Environment.IsDevelopment())
