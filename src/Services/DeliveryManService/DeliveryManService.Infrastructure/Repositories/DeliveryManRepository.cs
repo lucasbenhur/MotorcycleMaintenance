@@ -43,5 +43,25 @@ namespace DeliveryManService.Infrastructure.Repositories
                 .Find(filter)
                 .ToListAsync();
         }
+
+        public async Task<bool> UpdateAsync(DeliveryMan deliveryMan)
+        {
+            var updatedMotorcycle = await _context
+                .DeliveryMen
+                .ReplaceOneAsync(m => m.Id.ToUpper() == deliveryMan.Id.ToUpper(), deliveryMan);
+
+            return updatedMotorcycle.IsAcknowledged;
+        }
+
+        public async Task<DeliveryMan> GetAsync(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                return null;
+
+            return await _context
+                .DeliveryMen
+                .Find(m => m.Id.ToUpper() == id.ToUpper())
+                .FirstOrDefaultAsync();
+        }
     }
 }

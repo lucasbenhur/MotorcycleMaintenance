@@ -19,7 +19,7 @@ namespace MotorcycleService.Application.Commands
             }
             set
             {
-                _plate = value.ToUpper();
+                _plate = value?.ToUpper();
             }
         }
     }

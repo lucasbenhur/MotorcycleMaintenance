@@ -46,5 +46,24 @@ namespace DeliveryManService.Api.Controllers
 
             return Created(string.Empty, null);
         }
+
+        [HttpPost("/{id}/cnh")]
+        [SwaggerOperation(Summary = "Enviar foto da CNH")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Update([FromRoute] string id, [FromBody] UpdateDeliveryManCommand? updateDeliveryManCommand)
+        {
+            if (updateDeliveryManCommand is null)
+                return BadRequest(new MessageResponse());
+
+            updateDeliveryManCommand.Id = id;
+
+            if (!await _mediator.Send<bool>(updateDeliveryManCommand))
+                return BadRequest(new MessageResponse(_serviceContext.Notification));
+
+            return Created(string.Empty, null);
+        }
     }
 }

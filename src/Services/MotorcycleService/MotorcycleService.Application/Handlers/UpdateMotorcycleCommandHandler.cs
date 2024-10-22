@@ -71,14 +71,16 @@ namespace MotorcycleService.Application.Handlers
         private async Task<bool> IsValidAsync(UpdateMotorcycleCommand request)
         {
             if (string.IsNullOrWhiteSpace(request.Id))
-                _serviceContext.AddNotification("O campo Identificador é obrigatório");
+                _serviceContext.AddNotification("O campo id é obrigatório");
+            else if (!await ExistsIdAsync(request.Id))
+                _serviceContext.AddNotification($"A moto id {request.Id} não existe");
 
             if (string.IsNullOrWhiteSpace(request.Plate))
-                _serviceContext.AddNotification("O campo Placa é obrigatório");
+                _serviceContext.AddNotification("O campo placa é obrigatório");
             else if (!request.Plate.IsPlate())
-                _serviceContext.AddNotification("Informe uma Placa válida!");
+                _serviceContext.AddNotification("Informe uma placa válida!");
             else if (await ExistsPlateAsync(request))
-                _serviceContext.AddNotification($"A Placa {request.Plate} já existe");
+                _serviceContext.AddNotification($"A placa {request.Plate} já existe");
 
             return !_serviceContext.HasNotification();
         }
@@ -88,6 +90,12 @@ namespace MotorcycleService.Application.Handlers
             var specParams = new GetAllMotorcyclesSpecParams(request.Plate);
             var query = new GetAllMotorcyclesQuery(specParams);
             return (await _mediator.Send<ICollection<MotorcycleResponse>>(query)).Any(x => x.Id.ToUpper() != request.Id.ToUpper());
+        }
+
+        private async Task<bool> ExistsIdAsync(string id)
+        {
+            var query = new GetMotorcycleByIdQuery(id);
+            return await _mediator.Send<MotorcycleResponse>(query) is not null;
         }
     }
 }

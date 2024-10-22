@@ -32,5 +32,7 @@ namespace DeliveryManService.Core.Entities
         public string CnhNumber { get; internal set; }
         public string CnhType { get; internal set; }
         public string CnhImage { get; internal set; }
+
+        public void UpdateCnhImage(string cnhImage) => CnhImage = cnhImage;
     }
 }

@@ -1,25 +1,22 @@
 ﻿using DeliveryManService.Application.Commands;
-using DeliveryManService.Application.Mappers;
 using DeliveryManService.Application.Queries;
 using DeliveryManService.Application.Responses;
-using DeliveryManService.Core.Entities;
 using DeliveryManService.Core.Repositories;
 using DeliveryManService.Core.Specs;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using Shared.Extensions;
 using Shared.ServiceContext;
 
 namespace DeliveryManService.Application.Handlers
 {
-    public class CreateDeliveryManCommandHandler : IRequestHandler<CreateDeliveryManCommand, bool>
+    public class UpdateDeliveryManCommandHandler : IRequestHandler<UpdateDeliveryManCommand, bool>
     {
         private readonly IMediator _mediator;
         private readonly IDeliveryManRepository _deliveryManRepository;
         private readonly ILogger<CreateDeliveryManCommandHandler> _logger;
         private readonly IServiceContext _serviceContext;
 
-        public CreateDeliveryManCommandHandler(
+        public UpdateDeliveryManCommandHandler(
             IMediator mediator,
             IDeliveryManRepository deliveryManRepository,
             ILogger<CreateDeliveryManCommandHandler> logger,
@@ -31,67 +28,38 @@ namespace DeliveryManService.Application.Handlers
             _serviceContext = serviceContext;
         }
 
-        public async Task<bool> Handle(CreateDeliveryManCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(UpdateDeliveryManCommand request, CancellationToken cancellationToken)
         {
             try
             {
                 if (!await IsValidAsync(request))
                     return false;
 
-                var cnhImageBase64 = request.CnhImage;
                 var relativePath = GetChnImageRelativePath(request);
-                request.CnhImage = relativePath;
 
-                if (!await SaveCnhImageToLocalStorageAsync(cnhImageBase64, relativePath))
+                if (!await UpdateCnhImageToLocalStorageAsync(request.CnhImage, relativePath))
                     return false;
 
-                var deliveryManEntity = DeliveryManMapper.Mapper.Map<DeliveryMan>(request);
-                await _deliveryManRepository.CreateAsync(deliveryManEntity);
-                _logger.LogInformation("Entregador cadastrado com Id {Id}", request.Id);
+                var deliveryMan = await _deliveryManRepository.GetAsync(request.Id);
+                deliveryMan.UpdateCnhImage(relativePath);
+                await _deliveryManRepository.UpdateAsync(deliveryMan);
                 return true;
             }
             catch (Exception ex)
             {
-                var msg = $"Ocorreu um erro ao cadastrar o entregador Id {request.Id}";
+                var msg = $"Ocorreu um erro ao atualizar o entregador Id {request.Id}";
                 _logger.LogError(ex, msg);
                 _serviceContext.AddNotification(msg);
                 return false;
             }
         }
 
-        private async Task<bool> IsValidAsync(CreateDeliveryManCommand request)
+        private async Task<bool> IsValidAsync(UpdateDeliveryManCommand request)
         {
             if (string.IsNullOrWhiteSpace(request.Id))
-                _serviceContext.AddNotification("O campo identificador é obrigatório");
-            else if (await ExistsIdAsync(request.Id))
-                _serviceContext.AddNotification($"O identificador {request.Id} já existe");
-
-            if (string.IsNullOrWhiteSpace(request.Name))
-                _serviceContext.AddNotification("O campo nome é obrigatório");
-
-            if (string.IsNullOrWhiteSpace(request.Cnpj))
-                _serviceContext.AddNotification("O campo cnpj é obrigatório");
-            else if (!request.Cnpj.All(char.IsDigit))
-                _serviceContext.AddNotification("O campo cnpj deve conter apenas números");
-            else if (!request.Cnpj.IsValidCnpj())
-                _serviceContext.AddNotification("O campo cnpj é inválido");
-            else if (await ExistsCnpjAsync(request.Cnpj))
-                _serviceContext.AddNotification($"O cnpj {request.Cnpj} já existe");
-
-            if (request.BirthDate is null)
-                _serviceContext.AddNotification("O campo data_nascimento é obrigatório");
-
-            if (string.IsNullOrWhiteSpace(request.CnhNumber))
-                _serviceContext.AddNotification("O campo numero_cnh é obrigatório");
-            else if (!request.CnhNumber.All(char.IsDigit))
-                _serviceContext.AddNotification("O campo numero_cnh deve conter apenas números");
-            else if (await ExistsCnhNumberAsync(request.CnhNumber))
-                _serviceContext.AddNotification($"O numero_cnh {request.CnhNumber} já existe");
-
-            if (string.IsNullOrWhiteSpace(request.CnhType))
-                _serviceContext.AddNotification("O campo tipo_cnh é obrigatório");
-            else if (request.CnhType.ToUpper() != "A" && request.CnhType.ToUpper() != "B" && request.CnhType.ToUpper() != "AB")
-                _serviceContext.AddNotification("O campo tipo_cnh é inválido. Os valores permitidos são A, B, ou ambas A+B");
+                _serviceContext.AddNotification("O campo id é obrigatório");
+            else if (!await ExistsIdAsync(request.Id))
+                _serviceContext.AddNotification($"O entregador id {request.Id} não existe");
 
             if (string.IsNullOrEmpty(request.CnhImage))
                 _serviceContext.AddNotification("O campo imagem_cnh é obrigatório");
@@ -107,13 +75,13 @@ namespace DeliveryManService.Application.Handlers
             return extension == ".png" || extension == ".bmp";
         }
 
-        private string GetChnImageRelativePath(CreateDeliveryManCommand request)
+        private string GetChnImageRelativePath(UpdateDeliveryManCommand request)
         {
             var extension = GetCnhImageExtension(request.CnhImage);
             return $"cnh_image/{request.Id}/cnh{extension}";
         }
 
-        private async Task<bool> SaveCnhImageToLocalStorageAsync(string cnhImage, string relativePath)
+        private async Task<bool> UpdateCnhImageToLocalStorageAsync(string cnhImage, string relativePath)
         {
             try
             {
@@ -121,19 +89,19 @@ namespace DeliveryManService.Application.Handlers
                 string filePath = Path.Combine(basePath, relativePath);
                 var directory = Path.GetDirectoryName(filePath);
 
-                if (!Directory.Exists(directory))
-                {
-                    Directory.CreateDirectory(directory);
-                }
+                if (Directory.Exists(directory))
+                    Directory.Delete(directory, true);
+
+                Directory.CreateDirectory(directory);
 
                 byte[] imageBytes = Convert.FromBase64String(cnhImage);
                 await File.WriteAllBytesAsync(filePath, imageBytes);
-                _logger.LogInformation("Imagem CNH armazenada em {filePath}", filePath);
+                _logger.LogInformation("Imagem CNH atualizada em {filePath}", filePath);
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ocorreu um erro ao armazenar a imagem CNH");
+                _logger.LogError(ex, "Ocorreu um erro ao atualizar a imagem CNH");
                 return false;
             }
         }
