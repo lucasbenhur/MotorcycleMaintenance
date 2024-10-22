@@ -4,6 +4,6 @@ namespace RentService.Core.Integrations
 {
     public interface IDeliveryManApi
     {
-        Task<DeliveryManDto?> Get(string id);
+        Task<DeliveryManDto?> GetAsync(string id);
     }
 }

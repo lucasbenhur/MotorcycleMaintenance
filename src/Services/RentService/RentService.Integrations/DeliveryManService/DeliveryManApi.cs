@@ -24,7 +24,7 @@ namespace RentService.Integrations.DeliveryManService
             _logger = logger;
         }
 
-        public async Task<DeliveryManDto?> Get(string id)
+        public async Task<DeliveryManDto?> GetAsync(string id)
         {
             try
             {

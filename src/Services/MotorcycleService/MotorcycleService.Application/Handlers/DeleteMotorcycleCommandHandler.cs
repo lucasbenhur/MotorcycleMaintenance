@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using MotorcycleService.Application.Commands;
+using MotorcycleService.Core.Integrations;
 using MotorcycleService.Core.Repositories;
 using Shared.ServiceContext;
 
@@ -14,32 +15,39 @@ namespace MotorcycleService.Application.Handlers
         private readonly IServiceContext _serviceContext;
         private readonly IMediator _mediator;
         private readonly IPublishEndpoint _publishEndpoint;
+        private readonly IRentApi _rentApi;
 
         public DeleteMotorcycleCommandHandler(
             IMotorcycleRepository motorcycleRepository,
             ILogger<CreateMotorcycleCommandHandler> logger,
             IServiceContext serviceContext,
             IMediator mediator,
-            IPublishEndpoint publishEndpoint)
+            IPublishEndpoint publishEndpoint,
+            IRentApi rentApi)
         {
             _motorcycleRepository = motorcycleRepository;
             _logger = logger;
             _serviceContext = serviceContext;
             _mediator = mediator;
             _publishEndpoint = publishEndpoint;
+            _rentApi = rentApi;
         }
 
         public async Task<bool> Handle(DeleteMotorcycleCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                // TODO: Validar se existe alguma locação ativa para o Id informado.
-
                 var motorcycle = await _motorcycleRepository.GetAsync(request.Id);
 
                 if (motorcycle is null)
                 {
-                    _serviceContext.AddNotification($"Moto Id {request.Id} não encontrada");
+                    _serviceContext.AddNotification($"A moto_id {request.Id} não existe");
+                    return false;
+                }
+
+                if (await ExistRentAsync(request.Id))
+                {
+                    _serviceContext.AddNotification($"Existe registro de locação para a moto_id {request.Id}");
                     return false;
                 }
 
@@ -60,5 +68,8 @@ namespace MotorcycleService.Application.Handlers
                 return false;
             }
         }
+
+        public async Task<bool> ExistRentAsync(string motorcycleId) =>
+            !string.IsNullOrEmpty((await _rentApi.GetByMotorcycleIdAsync(motorcycleId!))?.Id);
     }
 }

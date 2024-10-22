@@ -8,11 +8,12 @@ namespace Shared.Notifications.Entities
         public Notification(string message)
         {
             Message = message;
+            Id = null;
         }
 
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; internal set; }
+        public string? Id { get; internal set; }
 
         public string Message { get; internal set; }
     }

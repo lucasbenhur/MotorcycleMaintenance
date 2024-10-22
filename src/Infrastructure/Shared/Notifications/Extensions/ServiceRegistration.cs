@@ -6,11 +6,11 @@ using System.Reflection;
 
 namespace Shared.Notifications.Extensions
 {
-    public static class NotificationExtensions
+    public static class ServiceRegistration
     {
-        public static void AddNotification(this IServiceCollection services)
+        public static void AddNotificationServices(this IServiceCollection services)
         {
-            services.AddScoped<INotificationDbContext, NotificationDbContext>();
+            services.AddSingleton<INotificationDbContext, NotificationDbContext>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
 
             var assemblies = new Assembly[]

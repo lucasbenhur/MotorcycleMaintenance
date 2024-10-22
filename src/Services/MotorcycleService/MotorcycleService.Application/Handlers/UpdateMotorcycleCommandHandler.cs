@@ -39,15 +39,9 @@ namespace MotorcycleService.Application.Handlers
                 if (!await IsValidAsync(request))
                     return false;
 
-                var motorcycle = await _motorcycleRepository.GetAsync(request.Id);
+                var motorcycle = await _motorcycleRepository.GetAsync(request.Id!);
 
-                if (motorcycle is null)
-                {
-                    _serviceContext.AddNotification($"Moto Id {request.Id} não encontrada");
-                    return false;
-                }
-
-                motorcycle.UpdatePlate(request.Plate);
+                motorcycle.UpdatePlate(request.Plate!);
 
                 if (!await _motorcycleRepository.UpdateAsync(motorcycle))
                 {

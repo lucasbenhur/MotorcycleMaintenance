@@ -18,7 +18,7 @@ namespace RentService.Integrations.MotorcycleService
             };
         }
 
-        public async Task<MotorcycleDto?> Get(string id)
+        public async Task<MotorcycleDto?> GetAsync(string id)
         {
             try
             {

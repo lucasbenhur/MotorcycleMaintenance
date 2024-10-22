@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace RentService.Application.Responses
+namespace MotorcycleService.Core.Dtos
 {
-    public class RentResponse
+    public class RentDto
     {
         [JsonPropertyName("identificador")]
         public string Id { get; set; }
@@ -26,6 +26,6 @@ namespace RentService.Application.Responses
         public DateTime EstimatedEndDate { get; set; }
 
         [JsonPropertyName("data_devolucao")]
-        public DateTime? ReturnDate { get; set; }
+        public DateTime? DataDevolucao { get; set; }
     }
 }

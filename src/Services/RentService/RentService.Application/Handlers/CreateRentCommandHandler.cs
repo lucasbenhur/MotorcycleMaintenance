@@ -17,23 +17,23 @@ namespace RentService.Application.Handlers
         private readonly IMediator _mediator;
         private readonly IServiceContext _serviceContext;
         private readonly IRentRepository _rentRepository;
-        private readonly IDeliveryManApi _deliveryManService;
-        private readonly IMotorcycleApi _motorcycleService;
+        private readonly IDeliveryManApi _deliveryManApi;
+        private readonly IMotorcycleApi _motorcycleApi;
 
         public CreateRentCommandHandler(
             ILogger<CreateRentCommandHandler> logger,
             IMediator mediator,
             IServiceContext serviceContext,
             IRentRepository rentRepository,
-            IDeliveryManApi deliveryManService,
-            IMotorcycleApi motorcycleService)
+            IDeliveryManApi deliveryManApi,
+            IMotorcycleApi motorcycleApi)
         {
             _logger = logger;
             _mediator = mediator;
             _serviceContext = serviceContext;
             _rentRepository = rentRepository;
-            _deliveryManService = deliveryManService;
-            _motorcycleService = motorcycleService;
+            _deliveryManApi = deliveryManApi;
+            _motorcycleApi = motorcycleApi;
         }
 
         public async Task<RentResponse?> Handle(CreateRentCommand request, CancellationToken cancellationToken)
@@ -81,26 +81,26 @@ namespace RentService.Application.Handlers
 
             if (string.IsNullOrWhiteSpace(request.DeliveryManId))
                 _serviceContext.AddNotification("O campo entregador_id deve ser informado");
-            else if (!await ExistsDeliveryMan(request.DeliveryManId!))
+            else if (!await ExistsDeliveryManAsync(request.DeliveryManId!))
                 _serviceContext.AddNotification($"O entregador_id {request.DeliveryManId} não existe");
-            else if (!(await GetDeliveryManCnhType(request.DeliveryManId!)).Contains("A"))
+            else if (!(await GetDeliveryManCnhTypeAsync(request.DeliveryManId!)).Contains("A"))
                 _serviceContext.AddNotification("O entregador precisa ter CNH com categoria A");
 
             if (string.IsNullOrWhiteSpace(request.MotorcycleId))
                 _serviceContext.AddNotification("O campo moto_id deve ser informado");
-            else if (!(await ExistsMotorcycle(request.MotorcycleId!)))
+            else if (!(await ExistsMotorcycleAsync(request.MotorcycleId!)))
                 _serviceContext.AddNotification($"A moto_id {request.MotorcycleId} não existe");
 
             return !_serviceContext.HasNotification();
         }
 
-        private async Task<bool> ExistsDeliveryMan(string deliveryManId) =>
-             !string.IsNullOrEmpty((await _deliveryManService.Get(deliveryManId!))?.Id);
+        private async Task<bool> ExistsDeliveryManAsync(string deliveryManId) =>
+             !string.IsNullOrEmpty((await _deliveryManApi.GetAsync(deliveryManId!))?.Id);
 
-        private async Task<string> GetDeliveryManCnhType(string deliveryManId) =>
-            (await _deliveryManService.Get(deliveryManId))?.CnhType ?? "";
+        private async Task<string> GetDeliveryManCnhTypeAsync(string deliveryManId) =>
+            (await _deliveryManApi.GetAsync(deliveryManId))?.CnhType ?? "";
 
-        private async Task<bool> ExistsMotorcycle(string motorcycleId) =>
-             !string.IsNullOrEmpty((await _motorcycleService.Get(motorcycleId!))?.Id);
+        private async Task<bool> ExistsMotorcycleAsync(string motorcycleId) =>
+             !string.IsNullOrEmpty((await _motorcycleApi.GetAsync(motorcycleId!))?.Id);
     }
 }

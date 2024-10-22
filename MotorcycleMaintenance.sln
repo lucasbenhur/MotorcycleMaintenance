@@ -51,6 +51,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "src\Infrastructur
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RentService.Integrations", "src\Services\RentService\RentService.Integrations\RentService.Integrations.csproj", "{255046DF-84CA-4D3F-B9E2-848C3E35C208}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotorcycleService.Integrations", "src\Services\MotorcycleService\MotorcycleService.Integrations\MotorcycleService.Integrations.csproj", "{26112800-813B-45CE-A6C6-754778175D0A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -121,6 +123,10 @@ Global
 		{255046DF-84CA-4D3F-B9E2-848C3E35C208}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{255046DF-84CA-4D3F-B9E2-848C3E35C208}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{255046DF-84CA-4D3F-B9E2-848C3E35C208}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26112800-813B-45CE-A6C6-754778175D0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26112800-813B-45CE-A6C6-754778175D0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26112800-813B-45CE-A6C6-754778175D0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26112800-813B-45CE-A6C6-754778175D0A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -148,6 +154,7 @@ Global
 		{EB62ADFF-E9F8-45C9-A468-F89010561FA9} = {06F152D0-5456-4671-9D61-23CC4040D866}
 		{DE3D130B-45B9-4A80-989E-8C473EAE109F} = {A1AD595B-4565-4616-BD1C-CFFD0012ADDD}
 		{255046DF-84CA-4D3F-B9E2-848C3E35C208} = {06F152D0-5456-4671-9D61-23CC4040D866}
+		{26112800-813B-45CE-A6C6-754778175D0A} = {CC54259A-CF36-4AC2-96AD-A90C773E7458}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {32879E21-2624-481A-8E21-214F56725798}

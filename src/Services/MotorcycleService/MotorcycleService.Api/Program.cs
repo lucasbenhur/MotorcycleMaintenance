@@ -3,11 +3,9 @@ using MassTransit;
 using Microsoft.OpenApi.Models;
 using MotorcycleService.Api.EventBusConsumer;
 using MotorcycleService.Application.Handlers;
-using MotorcycleService.Core.Repositories;
-using MotorcycleService.Infrastructure.Data;
-using MotorcycleService.Infrastructure.Repositories;
+using MotorcycleService.Infrastructure.Extensions;
+using MotorcycleService.Integrations.Extensions;
 using Shared.Notifications.Extensions;
-using Shared.ServiceContext;
 using System.Reflection;
 
 namespace MotorcycleService.Api
@@ -42,12 +40,11 @@ namespace MotorcycleService.Api
 
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies));
 
-            builder.Services.AddNotification();
-            builder.Services.AddScoped<IServiceContext, ServiceContext>();
-            builder.Services.AddScoped<IMotorcycleDbContext, MotorcycleDbContext>();
-            builder.Services.AddScoped<IMotorcycleRepository, MotorcycleRepository>();
-            builder.Services.AddScoped<CreateMotorcycleConsumer>();
+            builder.Services.AddNotificationServices();
+            builder.Services.AddIntegrationsServices();
+            builder.Services.AddInfrastructureServices();
 
+            builder.Services.AddScoped<CreateMotorcycleConsumer>();
             builder.Services.AddMassTransit(config =>
             {
                 config.AddConsumer<CreateMotorcycleConsumer>();

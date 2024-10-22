@@ -20,6 +20,7 @@
     <ProjectReference Include="..\..\..\Infrastructure\Shared\Shared.csproj" />
     <ProjectReference Include="..\MotorcycleService.Application\MotorcycleService.Application.csproj" />
     <ProjectReference Include="..\MotorcycleService.Infrastructure\MotorcycleService.Infrastructure.csproj" />
+    <ProjectReference Include="..\MotorcycleService.Integrations\MotorcycleService.Integrations.csproj" />
   </ItemGroup>
 
 </Project>

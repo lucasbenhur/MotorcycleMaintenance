@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using RentService.Core.Enums;
 
 namespace RentService.Core.Entities
@@ -13,20 +14,20 @@ namespace RentService.Core.Entities
             DateTime estimatedEndDate,
             RentPlan plan)
         {
+            Id = ObjectId.GenerateNewId();
+            DailyValue = null;
             DeliveryManId = deliveryManId;
             MotorcycleId = motorcycleId;
             StartDate = startDate;
             EndDate = endDate;
             EstimatedEndDate = estimatedEndDate;
             Plan = plan;
-            Id = null;
-            DailyValue = null;
             ReturnDate = null;
         }
 
         [BsonId]
-        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
-        public string? Id { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public ObjectId Id { get; set; }
         public int? DailyValue { get; set; }
         public string DeliveryManId { get; internal set; }
         public string MotorcycleId { get; internal set; }
@@ -35,5 +36,11 @@ namespace RentService.Core.Entities
         public DateTime EstimatedEndDate { get; internal set; }
         public RentPlan Plan { get; internal set; }
         public DateTime? ReturnDate { get; internal set; }
+
+        public void SetReturn(DateTime returnDate, int dailyValue)
+        {
+            ReturnDate = returnDate;
+            DailyValue = dailyValue;
+        }
     }
 }

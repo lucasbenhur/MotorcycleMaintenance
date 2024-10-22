@@ -1,9 +1,6 @@
 ﻿using DeliveryManService.Application.Handlers;
-using DeliveryManService.Core.Repositories;
-using DeliveryManService.Infrastructure.Data;
-using DeliveryManService.Infrastructure.Repositories;
+using DeliveryManService.Infrastructure.Extensions;
 using Microsoft.OpenApi.Models;
-using Shared.ServiceContext;
 using System.Reflection;
 
 namespace DeliveryManService.Api
@@ -38,9 +35,7 @@ namespace DeliveryManService.Api
 
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies));
 
-            builder.Services.AddScoped<IServiceContext, ServiceContext>();
-            builder.Services.AddScoped<IDeliveryManDbContext, DeliveryManDbContext>();
-            builder.Services.AddScoped<IDeliveryManRepository, DeliveryManRepository>();
+            builder.Services.AddInfrastructureServices();
 
             var app = builder.Build();
 
