@@ -80,6 +80,8 @@ Após o comando executado com sucesso o Docker deverá ter a seguinte estrutura 
 
 - Exceções foram tratadas para serem exibidas de forma amigável ao usuário.
 
+![image](https://github.com/user-attachments/assets/4d0cedbc-3026-495e-939e-ce8150b581cd)
+
 ## Notificações
 
 - As notificações geradas pelo `Evento Moto Cadastrada` podem ser consultadas na collection `Notifications` no banco de dados
