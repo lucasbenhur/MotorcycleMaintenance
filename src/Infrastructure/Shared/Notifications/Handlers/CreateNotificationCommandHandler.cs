@@ -27,7 +27,7 @@ namespace Shared.Notifications.Handlers
                 var notificationEntity = new Notification(request.Message);
                 var newNotification = await _notificationRepository.CreateAsync(notificationEntity);
                 _logger.LogInformation("Notificação armazenada no banco de dados para consulta futura com Id {Id}", newNotification.Id);
-                return new NotificationResponse(newNotification.Id, newNotification.Message);
+                return new NotificationResponse(newNotification.Id.ToString(), newNotification.Message);
             }
             catch (Exception ex)
             {

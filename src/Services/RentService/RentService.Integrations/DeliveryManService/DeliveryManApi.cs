@@ -28,7 +28,7 @@ namespace RentService.Integrations.DeliveryManService
         {
             try
             {
-                var response = await _httpClient.GetAsync($"/entregadores/{id}");
+                var response = await _httpClient.GetAsync($"/{id}");
                 response.EnsureSuccessStatusCode();
                 string responseData = await response.Content.ReadAsStringAsync();
                 var deliveryMan = JsonSerializer.Deserialize<DeliveryManDto>(responseData);

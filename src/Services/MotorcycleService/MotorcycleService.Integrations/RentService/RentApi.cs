@@ -28,7 +28,7 @@ namespace MotorcycleService.Integrations.RentService
         {
             try
             {
-                var response = await _httpClient.GetAsync($"/locacao/{motoId}/moto");
+                var response = await _httpClient.GetAsync($"/{motoId}/moto");
                 response.EnsureSuccessStatusCode();
                 string responseData = await response.Content.ReadAsStringAsync();
                 var rent = JsonSerializer.Deserialize<RentDto>(responseData);

@@ -22,7 +22,7 @@ namespace RentService.Integrations.MotorcycleService
         {
             try
             {
-                var response = await _httpClient.GetAsync($"/motos/{id}");
+                var response = await _httpClient.GetAsync($"/{id}");
                 response.EnsureSuccessStatusCode();
                 string responseData = await response.Content.ReadAsStringAsync();
                 var motorcycle = JsonSerializer.Deserialize<MotorcycleDto>(responseData);
