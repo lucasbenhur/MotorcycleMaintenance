@@ -72,7 +72,9 @@ Após o comando executado com sucesso o Docker deverá ter a seguinte estrutura 
 
 ## Logs
 
-- Os logs são gerados apenas no console da aplicação e não são persistidos.
+- A aplicação persiste os logs no banco na collection `Logs`, permitindo fácil consulta dos mesmos
+
+![image](https://github.com/user-attachments/assets/c4c1d97f-973d-45cc-add5-dc955f2abede)
 
 ## Exceções
 
