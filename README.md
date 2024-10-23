@@ -84,7 +84,7 @@ Após o comando executado com sucesso o Docker deverá ter a seguinte estrutura 
 
 - As notificações geradas pelo `Evento Moto Cadastrada` podem ser consultadas na collection `Notifications` no banco de dados
 
-![image](https://github.com/user-attachments/assets/68ba2b81-97a2-466e-b08a-ea22310ab7da)
+![image](https://github.com/user-attachments/assets/448f145a-f3a5-47b4-b1a1-2b00043f4a86)
 
 ## Imagens CNH
 
