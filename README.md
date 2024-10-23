@@ -16,9 +16,9 @@ Os microsserviços são:
 
 ### Banco De Dados
 
-O projeto usa MongoDb com a estrutura de collections abaixo:
+O projeto utiliza MongoDb com a estrutura de collections abaixo:
 
-![image](https://github.com/user-attachments/assets/5aeb1c43-b160-48f7-b90d-c17c6bb3710f)
+![image](https://github.com/user-attachments/assets/f6d43f48-83eb-4f54-9c37-2cdb0831115e)
 
 ### Arquitetura
 
@@ -72,7 +72,7 @@ Após o comando executado com sucesso o Docker deverá ter a seguinte estrutura 
 
 ## Logs
 
-- A aplicação persiste os logs no banco na collection `Logs`, permitindo fácil consulta dos mesmos
+- Os logs gerados pela aplicação podem ser consultados na collection `Logs` no banco de dados
 
 ![image](https://github.com/user-attachments/assets/c4c1d97f-973d-45cc-add5-dc955f2abede)
 
@@ -82,9 +82,9 @@ Após o comando executado com sucesso o Docker deverá ter a seguinte estrutura 
 
 ## Notificações
 
-- As notificações geradas pelo `Evento Moto Cadastrada` podem ser consultadas na collection `Notifications` no mongoDb
+- As notificações geradas pelo `Evento Moto Cadastrada` podem ser consultadas na collection `Notifications` no banco de dados
 
-![image](https://github.com/user-attachments/assets/3ccbd90b-80b9-482b-976c-0eecb255077e)
+![image](https://github.com/user-attachments/assets/68ba2b81-97a2-466e-b08a-ea22310ab7da)
 
 ## Imagens CNH
 
