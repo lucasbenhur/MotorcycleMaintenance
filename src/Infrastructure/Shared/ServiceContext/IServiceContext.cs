@@ -2,7 +2,7 @@
 {
     public interface IServiceContext
     {
-        string Notification { get; }
+        string? Notification { get; }
 
         void AddNotification(string notification);
         void ClearNotification();

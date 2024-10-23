@@ -12,7 +12,7 @@
             Notification = notification;
         }
 
-        public string Notification { get; internal set; }
+        public string? Notification { get; internal set; }
 
         public void AddNotification(string notification)
         {
