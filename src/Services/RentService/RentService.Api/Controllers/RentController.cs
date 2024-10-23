@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RentService.Application.Commands;
 using RentService.Application.Queries;
 using RentService.Application.Responses;
+using Shared.AppLog.Services;
 using Shared.Responses;
 using Shared.ServiceContext;
 using Swashbuckle.AspNetCore.Annotations;
@@ -18,11 +19,11 @@ namespace RentService.Api.Controllers
     public class RentController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly ILogger<RentController> _logger;
+        private readonly IAppLogger _logger;
         private readonly IServiceContext _serviceContext;
 
         public RentController(
-            ILogger<RentController> logger,
+            IAppLogger logger,
             IMediator mediator,
             IServiceContext serviceContext)
         {

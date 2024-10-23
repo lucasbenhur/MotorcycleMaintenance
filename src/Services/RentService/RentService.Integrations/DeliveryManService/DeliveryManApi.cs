@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using RentService.Core.Dtos;
 using RentService.Core.Integrations;
+using Shared.AppLog.Services;
 using System.Text.Json;
 
 namespace RentService.Integrations.DeliveryManService
@@ -9,11 +9,11 @@ namespace RentService.Integrations.DeliveryManService
     public class DeliveryManApi : IDeliveryManApi
     {
         private readonly HttpClient _httpClient;
-        private readonly ILogger<DeliveryManApi> _logger;
+        private readonly IAppLogger _logger;
 
         public DeliveryManApi(
             IConfiguration configuration,
-            ILogger<DeliveryManApi> logger)
+            IAppLogger logger)
         {
             var baseUri = configuration["ServicesSettings:DeliveryMan:BaseUri"] ?? "";
             _httpClient = new()
@@ -28,14 +28,19 @@ namespace RentService.Integrations.DeliveryManService
         {
             try
             {
+#if DEBUG
+                var response = await _httpClient.GetAsync($"/entregadores/{id}");
+#else
                 var response = await _httpClient.GetAsync($"/{id}");
+#endif
                 response.EnsureSuccessStatusCode();
                 string responseData = await response.Content.ReadAsStringAsync();
                 var deliveryMan = JsonSerializer.Deserialize<DeliveryManDto>(responseData);
                 return deliveryMan;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Erro ao fazer uma requisição para DeliveryManApi");
                 return null;
             }
         }

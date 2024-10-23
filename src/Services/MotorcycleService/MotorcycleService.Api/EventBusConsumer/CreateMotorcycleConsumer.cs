@@ -1,17 +1,18 @@
 ﻿using EventBus.Messages.Events;
 using MassTransit;
 using MediatR;
+using Shared.AppLog.Services;
 using Shared.Notifications.Command;
 
 namespace MotorcycleService.Api.EventBusConsumer
 {
     public class CreateMotorcycleConsumer : IConsumer<CreateMotorcycleEvent>
     {
-        private readonly ILogger<CreateMotorcycleConsumer> _logger;
+        private readonly IAppLogger _logger;
         private readonly IMediator _mediator;
 
         public CreateMotorcycleConsumer(
-            ILogger<CreateMotorcycleConsumer> logger,
+            IAppLogger logger,
             IMediator mediator)
         {
             _logger = logger;
@@ -22,7 +23,7 @@ namespace MotorcycleService.Api.EventBusConsumer
         {
             try
             {
-                _logger.LogInformation("Consumidor do Evento Cadastrar Moto inicidado para o Id {Id}", context.Message.Id);
+                _logger.LogInformation($"Consumidor do Evento Cadastrar Moto inicidado para o Id {context.Message.Id}");
 
                 if (context.Message.Year == 2024)
                 {
@@ -35,11 +36,11 @@ namespace MotorcycleService.Api.EventBusConsumer
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ocorreu um erro ao consumir Evento Cadastar Moto para o Id {Id}", context.Message.Id);
+                _logger.LogError(ex, $"Ocorreu um erro ao consumir Evento Cadastar Moto para o Id {context.Message.Id}");
             }
             finally
             {
-                _logger.LogInformation("Consumidor do Evento Cadastrar Moto finalizado para o Id {Id}", context.Message.Id);
+                _logger.LogInformation($"Consumidor do Evento Cadastrar Moto finalizado para o Id {context.Message.Id}");
             }
         }
     }

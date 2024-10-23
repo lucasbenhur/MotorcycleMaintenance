@@ -3,6 +3,7 @@ using DeliveryManService.Application.Queries;
 using DeliveryManService.Core.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Shared.AppLog.Services;
 using Shared.Responses;
 using Shared.ServiceContext;
 using Swashbuckle.AspNetCore.Annotations;
@@ -18,12 +19,12 @@ namespace DeliveryManService.Api.Controllers
 #endif
     public class DeliveryManController : ControllerBase
     {
-        private readonly ILogger<DeliveryManController> _logger;
+        private readonly IAppLogger _logger;
         private readonly IMediator _mediator;
         private readonly IServiceContext _serviceContext;
 
         public DeliveryManController(
-            ILogger<DeliveryManController> logger,
+            IAppLogger logger,
             IMediator mediator,
             IServiceContext serviceContext)
         {

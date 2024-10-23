@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using MotorcycleService.Core.Dtos;
 using MotorcycleService.Core.Integrations;
+using Shared.AppLog.Services;
 using System.Text.Json;
 
 namespace MotorcycleService.Integrations.RentService
@@ -9,11 +9,11 @@ namespace MotorcycleService.Integrations.RentService
     public class RentApi : IRentApi
     {
         private readonly HttpClient _httpClient;
-        private readonly ILogger<RentApi> _logger;
+        private readonly IAppLogger _logger;
 
         public RentApi(
             IConfiguration configuration,
-            ILogger<RentApi> logger)
+            IAppLogger logger)
         {
             var baseUri = configuration["ServicesSettings:Rent:BaseUri"] ?? "";
             _httpClient = new()
@@ -28,14 +28,19 @@ namespace MotorcycleService.Integrations.RentService
         {
             try
             {
+#if DEBUG
+                var response = await _httpClient.GetAsync($"/locacao/{motoId}/moto");
+#else
                 var response = await _httpClient.GetAsync($"/{motoId}/moto");
+#endif
                 response.EnsureSuccessStatusCode();
                 string responseData = await response.Content.ReadAsStringAsync();
                 var rent = JsonSerializer.Deserialize<RentDto>(responseData);
                 return rent;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Erro ao fazer uma requisição para RentApi");
                 return null;
             }
         }

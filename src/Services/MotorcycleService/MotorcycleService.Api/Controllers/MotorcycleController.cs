@@ -4,6 +4,7 @@ using MotorcycleService.Application.Commands;
 using MotorcycleService.Application.Queries;
 using MotorcycleService.Application.Responses;
 using MotorcycleService.Core.Specs;
+using Shared.AppLog.Services;
 using Shared.Responses;
 using Shared.ServiceContext;
 using Swashbuckle.AspNetCore.Annotations;
@@ -20,11 +21,11 @@ namespace MotorcycleService.Api.Controllers
     public class MotorcycleController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly ILogger<MotorcycleController> _logger;
+        private readonly IAppLogger _logger;
         private readonly IServiceContext _serviceContext;
 
         public MotorcycleController(
-            ILogger<MotorcycleController> logger,
+            IAppLogger logger,
             IMediator mediator,
             IServiceContext serviceContext)
         {

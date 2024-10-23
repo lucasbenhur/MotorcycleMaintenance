@@ -5,6 +5,7 @@ using MotorcycleService.Api.EventBusConsumer;
 using MotorcycleService.Application.Handlers;
 using MotorcycleService.Infrastructure.Extensions;
 using MotorcycleService.Integrations.Extensions;
+using Shared.AppLog.Extensions;
 using Shared.Notifications.Extensions;
 using System.Reflection;
 
@@ -43,6 +44,7 @@ namespace MotorcycleService.Api
             builder.Services.AddNotificationServices();
             builder.Services.AddIntegrationsServices();
             builder.Services.AddInfrastructureServices();
+            builder.Services.AddAppLogServices();
 
             builder.Services.AddScoped<CreateMotorcycleConsumer>();
             builder.Services.AddMassTransit(config =>

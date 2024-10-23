@@ -10,7 +10,7 @@ namespace Shared.Notifications.Extensions
     {
         public static void AddNotificationServices(this IServiceCollection services)
         {
-            services.AddSingleton<INotificationDbContext, NotificationDbContext>();
+            services.AddScoped<INotificationDbContext, NotificationDbContext>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
 
             var assemblies = new Assembly[]

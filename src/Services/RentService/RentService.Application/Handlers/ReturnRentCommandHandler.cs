@@ -1,18 +1,18 @@
 ﻿using MediatR;
-using Microsoft.Extensions.Logging;
 using RentService.Application.Commands;
 using RentService.Application.Queries;
 using RentService.Core.Entities;
 using RentService.Core.Enums;
 using RentService.Core.Integrations;
 using RentService.Core.Repositories;
+using Shared.AppLog.Services;
 using Shared.ServiceContext;
 
 namespace RentService.Application.Handlers
 {
     public class ReturnRentCommandHandler : IRequestHandler<ReturnRentCommand, bool>
     {
-        private readonly ILogger<ReturnRentCommandHandler> _logger;
+        private readonly IAppLogger _logger;
         private readonly IMediator _mediator;
         private readonly IServiceContext _serviceContext;
         private readonly IRentRepository _rentRepository;
@@ -20,7 +20,7 @@ namespace RentService.Application.Handlers
         private readonly IMotorcycleApi _motorcycleApi;
 
         public ReturnRentCommandHandler(
-            ILogger<ReturnRentCommandHandler> logger,
+            IAppLogger logger,
             IMediator mediator,
             IServiceContext serviceContext,
             IRentRepository rentRepository,
@@ -52,7 +52,7 @@ namespace RentService.Application.Handlers
                     return false;
                 }
 
-                _logger.LogInformation("Locação Id {Id} data de devolução atualizada e valor calculado", request.Id);
+                _logger.LogInformation($"Locação Id {request.Id} data de devolução atualizada e valor calculado");
                 return true;
             }
             catch (Exception ex)

@@ -3,7 +3,7 @@ using DeliveryManService.Application.Queries;
 using DeliveryManService.Application.Responses;
 using DeliveryManService.Core.Repositories;
 using MediatR;
-using Microsoft.Extensions.Logging;
+using Shared.AppLog.Services;
 using Shared.ServiceContext;
 
 namespace DeliveryManService.Application.Handlers
@@ -11,12 +11,12 @@ namespace DeliveryManService.Application.Handlers
     public class GetAllDeliveryMenHandler : IRequestHandler<GetAllDeliveryMenQuery, ICollection<DeliveryManResponse>>
     {
         private readonly IDeliveryManRepository _deliveryManrepository;
-        private readonly ILogger<GetAllDeliveryMenHandler> _logger;
+        private readonly IAppLogger _logger;
         private readonly IServiceContext _serviceContext;
 
         public GetAllDeliveryMenHandler(
             IDeliveryManRepository deliveryManrepository,
-            ILogger<GetAllDeliveryMenHandler> logger,
+            IAppLogger logger,
             IServiceContext serviceContext)
         {
             _deliveryManrepository = deliveryManrepository;

@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.Extensions.Logging;
 using RentService.Application.Commands;
 using RentService.Application.Mappers;
 using RentService.Application.Responses;
@@ -7,13 +6,14 @@ using RentService.Core.Entities;
 using RentService.Core.Enums;
 using RentService.Core.Integrations;
 using RentService.Core.Repositories;
+using Shared.AppLog.Services;
 using Shared.ServiceContext;
 
 namespace RentService.Application.Handlers
 {
     public class CreateRentCommandHandler : IRequestHandler<CreateRentCommand, RentResponse?>
     {
-        private readonly ILogger<CreateRentCommandHandler> _logger;
+        private readonly IAppLogger _logger;
         private readonly IMediator _mediator;
         private readonly IServiceContext _serviceContext;
         private readonly IRentRepository _rentRepository;
@@ -21,7 +21,7 @@ namespace RentService.Application.Handlers
         private readonly IMotorcycleApi _motorcycleApi;
 
         public CreateRentCommandHandler(
-            ILogger<CreateRentCommandHandler> logger,
+            IAppLogger logger,
             IMediator mediator,
             IServiceContext serviceContext,
             IRentRepository rentRepository,
@@ -46,13 +46,13 @@ namespace RentService.Application.Handlers
                 var rentEntity = RentMapper.Mapper.Map<Rent>(request);
                 var newRent = await _rentRepository.CreateAsync(rentEntity);
 
-                _logger.LogInformation("Locação Id {Id} cadastrada", newRent.Id);
+                _logger.LogInformation($"Locação Id {newRent.Id} cadastrada para MotoId {newRent.MotorcycleId} e EntregadorId {newRent.MotorcycleId}");
 
                 return RentMapper.Mapper.Map<RentResponse>(newRent);
             }
             catch (Exception ex)
             {
-                var msg = $"Ocorreu um erro ao cadastrar a locação entregador_id {request.DeliveryManId} moto_id {request.MotorcycleId}";
+                var msg = $"Ocorreu um erro ao cadastrar a locação para MotoId {request.MotorcycleId} EntregadorId {request.DeliveryManId}";
                 _logger.LogError(ex, msg);
                 _serviceContext.AddNotification(msg);
                 return null;

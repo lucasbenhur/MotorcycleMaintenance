@@ -1,10 +1,10 @@
 ﻿using MassTransit;
 using MediatR;
-using Microsoft.Extensions.Logging;
 using MotorcycleService.Application.Commands;
 using MotorcycleService.Application.Queries;
 using MotorcycleService.Core.Repositories;
 using MotorcycleService.Core.Specs;
+using Shared.AppLog.Services;
 using Shared.Extensions;
 using Shared.ServiceContext;
 
@@ -13,14 +13,14 @@ namespace MotorcycleService.Application.Handlers
     public class UpdateMotorcycleCommandHandler : IRequestHandler<UpdateMotorcycleCommand, bool>
     {
         private readonly IMotorcycleRepository _motorcycleRepository;
-        private readonly ILogger<CreateMotorcycleCommandHandler> _logger;
+        private readonly IAppLogger _logger;
         private readonly IServiceContext _serviceContext;
         private readonly IMediator _mediator;
         private readonly IPublishEndpoint _publishEndpoint;
 
         public UpdateMotorcycleCommandHandler(
             IMotorcycleRepository motorcycleRepository,
-            ILogger<CreateMotorcycleCommandHandler> logger,
+            IAppLogger logger,
             IServiceContext serviceContext,
             IMediator mediator,
             IPublishEndpoint publishEndpoint)
@@ -49,7 +49,7 @@ namespace MotorcycleService.Application.Handlers
                     return false;
                 }
 
-                _logger.LogInformation("Moto Id {Id} atualizada", motorcycle.Id);
+                _logger.LogInformation($"Moto Id {motorcycle.Id} atualizada");
                 return true;
             }
             catch (Exception ex)

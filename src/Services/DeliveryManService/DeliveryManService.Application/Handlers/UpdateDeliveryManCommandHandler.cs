@@ -3,7 +3,7 @@ using DeliveryManService.Application.Queries;
 using DeliveryManService.Core.Repositories;
 using DeliveryManService.Core.Specs;
 using MediatR;
-using Microsoft.Extensions.Logging;
+using Shared.AppLog.Services;
 using Shared.ServiceContext;
 
 namespace DeliveryManService.Application.Handlers
@@ -12,13 +12,13 @@ namespace DeliveryManService.Application.Handlers
     {
         private readonly IMediator _mediator;
         private readonly IDeliveryManRepository _deliveryManRepository;
-        private readonly ILogger<CreateDeliveryManCommandHandler> _logger;
+        private readonly IAppLogger _logger;
         private readonly IServiceContext _serviceContext;
 
         public UpdateDeliveryManCommandHandler(
             IMediator mediator,
             IDeliveryManRepository deliveryManRepository,
-            ILogger<CreateDeliveryManCommandHandler> logger,
+            IAppLogger logger,
             IServiceContext serviceContext)
         {
             _mediator = mediator;
@@ -95,7 +95,7 @@ namespace DeliveryManService.Application.Handlers
 
                 byte[] imageBytes = Convert.FromBase64String(cnhImage);
                 await File.WriteAllBytesAsync(filePath, imageBytes);
-                _logger.LogInformation("Imagem CNH atualizada em {filePath}", filePath);
+                _logger.LogInformation($"Imagem CNH atualizada em {filePath}");
                 return true;
             }
             catch (Exception ex)

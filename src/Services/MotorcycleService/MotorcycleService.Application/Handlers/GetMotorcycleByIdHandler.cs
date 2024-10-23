@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using Microsoft.Extensions.Logging;
 using MotorcycleService.Application.Mappers;
 using MotorcycleService.Application.Queries;
 using MotorcycleService.Application.Responses;
 using MotorcycleService.Core.Repositories;
+using Shared.AppLog.Services;
 using Shared.ServiceContext;
 
 namespace MotorcycleService.Application.Handlers
@@ -11,12 +11,12 @@ namespace MotorcycleService.Application.Handlers
     public class GetMotorcycleByIdHandler : IRequestHandler<GetMotorcycleByIdQuery, MotorcycleResponse>
     {
         private readonly IMotorcycleRepository _motorcycleRepository;
-        private readonly ILogger<GetMotorcycleByIdHandler> _logger;
+        private readonly IAppLogger _logger;
         private readonly IServiceContext _serviceContext;
 
         public GetMotorcycleByIdHandler(
             IMotorcycleRepository motorcycleRepository,
-            ILogger<GetMotorcycleByIdHandler> logger,
+            IAppLogger logger,
             IServiceContext serviceContext)
         {
             _motorcycleRepository = motorcycleRepository;

@@ -1,9 +1,9 @@
 ﻿using MassTransit;
 using MediatR;
-using Microsoft.Extensions.Logging;
 using MotorcycleService.Application.Commands;
 using MotorcycleService.Core.Integrations;
 using MotorcycleService.Core.Repositories;
+using Shared.AppLog.Services;
 using Shared.ServiceContext;
 
 namespace MotorcycleService.Application.Handlers
@@ -11,7 +11,7 @@ namespace MotorcycleService.Application.Handlers
     public class DeleteMotorcycleCommandHandler : IRequestHandler<DeleteMotorcycleCommand, bool>
     {
         private readonly IMotorcycleRepository _motorcycleRepository;
-        private readonly ILogger<CreateMotorcycleCommandHandler> _logger;
+        private readonly IAppLogger _logger;
         private readonly IServiceContext _serviceContext;
         private readonly IMediator _mediator;
         private readonly IPublishEndpoint _publishEndpoint;
@@ -19,7 +19,7 @@ namespace MotorcycleService.Application.Handlers
 
         public DeleteMotorcycleCommandHandler(
             IMotorcycleRepository motorcycleRepository,
-            ILogger<CreateMotorcycleCommandHandler> logger,
+            IAppLogger logger,
             IServiceContext serviceContext,
             IMediator mediator,
             IPublishEndpoint publishEndpoint,
@@ -57,7 +57,7 @@ namespace MotorcycleService.Application.Handlers
                     return false;
                 }
 
-                _logger.LogInformation("Moto Id {Id} removida", motorcycle.Id);
+                _logger.LogInformation($"Moto Id {motorcycle.Id} removida");
                 return true;
             }
             catch (Exception ex)

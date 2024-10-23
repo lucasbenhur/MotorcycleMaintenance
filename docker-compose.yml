@@ -32,6 +32,8 @@ services:
       - motorcyclemaintenance
     depends_on:
       - mongodb
+    environment:
+      - HOSTNAME=deliveryman-api
 
   motorcycle-api:
     image: motorcycle-api
@@ -45,6 +47,8 @@ services:
     depends_on:
       - mongodb
       - rabbitmq
+    environment:
+      - HOSTNAME=motorcycle-api
 
   rent-api:
     image: rent-api
@@ -57,6 +61,8 @@ services:
       - motorcyclemaintenance
     depends_on:
       - mongodb
+    environment:
+      - HOSTNAME=rent-api
 
   mongodb:
     image: mongo:latest

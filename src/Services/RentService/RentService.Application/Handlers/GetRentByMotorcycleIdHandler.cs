@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using Microsoft.Extensions.Logging;
 using RentService.Application.Mappers;
 using RentService.Application.Queries;
 using RentService.Application.Responses;
 using RentService.Core.Repositories;
+using Shared.AppLog.Services;
 using Shared.ServiceContext;
 
 namespace RentService.Application.Handlers
@@ -11,12 +11,12 @@ namespace RentService.Application.Handlers
     public class GetRentByMotorcycleIdHandler : IRequestHandler<GetRentByMotorcycleIdQuery, RentResponse?>
     {
         private readonly IRentRepository _rentRepository;
-        private readonly ILogger<GetRentByMotorcycleIdHandler> _logger;
+        private readonly IAppLogger _logger;
         private readonly IServiceContext _serviceContext;
 
         public GetRentByMotorcycleIdHandler(
             IRentRepository rentRepository,
-            ILogger<GetRentByMotorcycleIdHandler> logger,
+            IAppLogger logger,
             IServiceContext serviceContext)
         {
             _rentRepository = rentRepository;

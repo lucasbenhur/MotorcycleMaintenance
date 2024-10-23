@@ -2,6 +2,7 @@
 using RentService.Application.Commands;
 using RentService.Infrastructure.Extensions;
 using RentService.Integrations.Extensions;
+using Shared.AppLog.Extensions;
 using Shared.ServiceContext;
 using System.Reflection;
 
@@ -40,6 +41,7 @@ namespace RentService.Api
             builder.Services.AddScoped<IServiceContext, ServiceContext>();
             builder.Services.AddIntegrationsServices();
             builder.Services.AddInfrastructureServices();
+            builder.Services.AddAppLogServices();
 
             var app = builder.Build();
 

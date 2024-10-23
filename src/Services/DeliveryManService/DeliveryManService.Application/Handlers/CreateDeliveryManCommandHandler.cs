@@ -5,7 +5,7 @@ using DeliveryManService.Core.Entities;
 using DeliveryManService.Core.Repositories;
 using DeliveryManService.Core.Specs;
 using MediatR;
-using Microsoft.Extensions.Logging;
+using Shared.AppLog.Services;
 using Shared.Extensions;
 using Shared.ServiceContext;
 
@@ -15,13 +15,13 @@ namespace DeliveryManService.Application.Handlers
     {
         private readonly IMediator _mediator;
         private readonly IDeliveryManRepository _deliveryManRepository;
-        private readonly ILogger<CreateDeliveryManCommandHandler> _logger;
+        private readonly IAppLogger _logger;
         private readonly IServiceContext _serviceContext;
 
         public CreateDeliveryManCommandHandler(
             IMediator mediator,
             IDeliveryManRepository deliveryManRepository,
-            ILogger<CreateDeliveryManCommandHandler> logger,
+            IAppLogger logger,
             IServiceContext serviceContext)
         {
             _mediator = mediator;
@@ -46,7 +46,7 @@ namespace DeliveryManService.Application.Handlers
 
                 var deliveryManEntity = DeliveryManMapper.Mapper.Map<DeliveryMan>(request);
                 await _deliveryManRepository.CreateAsync(deliveryManEntity);
-                _logger.LogInformation("Entregador cadastrado com Id {Id}", request.Id);
+                _logger.LogInformation($"Entregador cadastrado com Id {request.Id}");
                 return true;
             }
             catch (Exception ex)
@@ -127,7 +127,7 @@ namespace DeliveryManService.Application.Handlers
 
                 byte[] imageBytes = Convert.FromBase64String(cnhImage);
                 await File.WriteAllBytesAsync(filePath, imageBytes);
-                _logger.LogInformation("Imagem CNH armazenada em {filePath}", filePath);
+                _logger.LogInformation($"Imagem CNH armazenada em {filePath}");
                 return true;
             }
             catch (Exception ex)
