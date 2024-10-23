@@ -8,7 +8,7 @@ using Shared.ServiceContext;
 
 namespace DeliveryManService.Application.Handlers
 {
-    public class GetDeliveryManByIdHandler : IRequestHandler<GetDeliveryManByIdQuery, DeliveryManResponse>
+    public class GetDeliveryManByIdHandler : IRequestHandler<GetDeliveryManByIdQuery, DeliveryManResponse?>
     {
         private readonly IDeliveryManRepository _deliveryManRepository;
         private readonly IAppLogger _logger;
@@ -24,7 +24,7 @@ namespace DeliveryManService.Application.Handlers
             _serviceContext = serviceContext;
         }
 
-        public async Task<DeliveryManResponse> Handle(GetDeliveryManByIdQuery request, CancellationToken cancellationToken)
+        public async Task<DeliveryManResponse?> Handle(GetDeliveryManByIdQuery request, CancellationToken cancellationToken)
         {
             try
             {

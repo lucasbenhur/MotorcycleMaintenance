@@ -53,7 +53,7 @@ namespace DeliveryManService.Infrastructure.Repositories
             return updatedMotorcycle.IsAcknowledged;
         }
 
-        public async Task<DeliveryMan> GetAsync(string id)
+        public async Task<DeliveryMan?> GetAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
                 return null;

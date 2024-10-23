@@ -3,7 +3,7 @@ using MotorcycleService.Application.Responses;
 
 namespace MotorcycleService.Application.Queries
 {
-    public class GetMotorcycleByIdQuery : IRequest<MotorcycleResponse>
+    public class GetMotorcycleByIdQuery : IRequest<MotorcycleResponse?>
     {
         public string Id { get; internal set; }
 

@@ -41,20 +41,23 @@ namespace MotorcycleService.Application.Handlers
 
                 var motorcycle = await _motorcycleRepository.GetAsync(request.Id!);
 
-                motorcycle.UpdatePlate(request.Plate!);
+                if (motorcycle == null)
+                    throw new NullReferenceException();
+
+                motorcycle.UpdatePlate(request.Plate);
 
                 if (!await _motorcycleRepository.UpdateAsync(motorcycle))
                 {
-                    _serviceContext.AddNotification($"Não foi possível atualizar a Moto Id {request.Id}");
+                    _serviceContext.AddNotification($"Não foi possível atualizar a Moto ID {request.Id}");
                     return false;
                 }
 
-                _logger.LogInformation($"Moto Id {motorcycle.Id} atualizada");
+                _logger.LogInformation($"Moto ID {motorcycle.Id} atualizada");
                 return true;
             }
             catch (Exception ex)
             {
-                var msg = $"Ocorreu um erro ao atualizar a Moto Id {request.Id}";
+                var msg = $"Ocorreu um erro ao atualizar a Moto ID {request.Id}";
                 _logger.LogError(ex, msg);
                 _serviceContext.AddNotification(msg);
                 return false;
@@ -82,7 +85,7 @@ namespace MotorcycleService.Application.Handlers
         {
             var specParams = new GetAllMotorcyclesSpecParams(request.Plate);
             var query = new GetAllMotorcyclesQuery(specParams);
-            return (await _mediator.Send(query)).Any(x => x.Id.ToUpper() != request.Id.ToUpper());
+            return (await _mediator.Send(query)).Any(x => x.Id.ToUpper() != request.Id?.ToUpper());
         }
 
         private async Task<bool> ExistsIdAsync(string id)

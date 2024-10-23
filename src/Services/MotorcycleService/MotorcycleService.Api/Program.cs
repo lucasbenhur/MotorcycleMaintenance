@@ -6,7 +6,9 @@ using MotorcycleService.Application.Handlers;
 using MotorcycleService.Infrastructure.Extensions;
 using MotorcycleService.Integrations.Extensions;
 using Shared.AppLog.Extensions;
+using Shared.Extensions;
 using Shared.Notifications.Extensions;
+using Shared.ServiceContext;
 using System.Reflection;
 
 namespace MotorcycleService.Api
@@ -44,7 +46,9 @@ namespace MotorcycleService.Api
             builder.Services.AddNotificationServices();
             builder.Services.AddIntegrationsServices();
             builder.Services.AddInfrastructureServices();
-            builder.Services.AddAppLogServices();
+            builder.Services.AddLogServices();
+            builder.Services.AddModelValidation();
+            builder.Services.AddServiceContext();
 
             builder.Services.AddScoped<CreateMotorcycleConsumer>();
             builder.Services.AddMassTransit(config =>

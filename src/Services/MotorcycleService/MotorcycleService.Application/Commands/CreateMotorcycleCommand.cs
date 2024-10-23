@@ -4,21 +4,26 @@ using System.Text.Json.Serialization;
 
 namespace MotorcycleService.Application.Commands
 {
-    public class CreateMotorcycleCommand : IRequest<MotorcycleResponse>
+    public class CreateMotorcycleCommand : IRequest<MotorcycleResponse?>
     {
+        [JsonRequired]
         [JsonPropertyName("identificador")]
-        public string? Id { get; set; }
+        public string Id { get; set; } = null!;
 
+        [JsonRequired]
         [JsonPropertyName("ano")]
-        public int? Year { get; set; }
+        public int Year { get; set; }
 
+        [JsonRequired]
         [JsonPropertyName("modelo")]
-        public string? Model { get; set; }
+        public string Model { get; set; } = null!;
 
-        private string? _plate { get; set; }
+        [JsonIgnore]
+        private string _plate { get; set; } = null!;
 
+        [JsonRequired]
         [JsonPropertyName("placa")]
-        public string? Plate
+        public string Plate
         {
             get
             {
@@ -26,7 +31,7 @@ namespace MotorcycleService.Application.Commands
             }
             set
             {
-                _plate = value?.ToUpper();
+                _plate = value.ToUpper();
             }
         }
     }

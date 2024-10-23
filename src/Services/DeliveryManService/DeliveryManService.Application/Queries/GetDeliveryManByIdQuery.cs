@@ -3,7 +3,7 @@ using MediatR;
 
 namespace DeliveryManService.Application.Queries
 {
-    public class GetDeliveryManByIdQuery : IRequest<DeliveryManResponse>
+    public class GetDeliveryManByIdQuery : IRequest<DeliveryManResponse?>
     {
         public string Id { get; internal set; }
 

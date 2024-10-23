@@ -2,6 +2,8 @@
 using DeliveryManService.Infrastructure.Extensions;
 using Microsoft.OpenApi.Models;
 using Shared.AppLog.Extensions;
+using Shared.Extensions;
+using Shared.ServiceContext;
 using System.Reflection;
 
 namespace DeliveryManService.Api
@@ -37,7 +39,9 @@ namespace DeliveryManService.Api
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies));
 
             builder.Services.AddInfrastructureServices();
-            builder.Services.AddAppLogServices();
+            builder.Services.AddLogServices();
+            builder.Services.AddModelValidation();
+            builder.Services.AddServiceContext();
 
             var app = builder.Build();
 

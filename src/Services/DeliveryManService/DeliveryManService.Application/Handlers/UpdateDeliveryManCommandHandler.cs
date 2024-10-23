@@ -39,14 +39,24 @@ namespace DeliveryManService.Application.Handlers
                 if (!await UpdateCnhImageToLocalStorageAsync(request.CnhImage, relativePath))
                     return false;
 
-                var deliveryMan = await _deliveryManRepository.GetAsync(request.Id);
+                var deliveryMan = await _deliveryManRepository.GetAsync(request.Id!);
+
+                if (deliveryMan == null)
+                    throw new NullReferenceException();
+
                 deliveryMan.UpdateCnhImage(relativePath);
-                await _deliveryManRepository.UpdateAsync(deliveryMan);
+
+                if (!await _deliveryManRepository.UpdateAsync(deliveryMan))
+                {
+                    _serviceContext.AddNotification($"Não foi possível atualizar o Entregador ID {request.Id}");
+                    return false;
+                }
+
                 return true;
             }
             catch (Exception ex)
             {
-                var msg = $"Ocorreu um erro ao atualizar o entregador Id {request.Id}";
+                var msg = $"Ocorreu um erro ao atualizar o entregador ID {request.Id}";
                 _logger.LogError(ex, msg);
                 _serviceContext.AddNotification(msg);
                 return false;
@@ -60,7 +70,7 @@ namespace DeliveryManService.Application.Handlers
             else if (!await ExistsIdAsync(request.Id))
                 _serviceContext.AddNotification($"O entregador id {request.Id} não existe");
 
-            if (string.IsNullOrEmpty(request.CnhImage))
+            if (string.IsNullOrWhiteSpace(request.CnhImage))
                 _serviceContext.AddNotification("O campo imagem_cnh é obrigatório");
             else if (!IsValidCnhImageExtension(request.CnhImage))
                 _serviceContext.AddNotification("Extensão do arquivo no campo imagem_cnh é inválido. São permitidos apenas .png e .bmp");
@@ -88,6 +98,9 @@ namespace DeliveryManService.Application.Handlers
                 string filePath = Path.Combine(basePath, relativePath);
                 var directory = Path.GetDirectoryName(filePath);
 
+                if (string.IsNullOrWhiteSpace(directory))
+                    return false;
+
                 if (Directory.Exists(directory))
                     Directory.Delete(directory, true);
 
@@ -107,9 +120,6 @@ namespace DeliveryManService.Application.Handlers
 
         private string GetCnhImageExtension(string cnhImage)
         {
-            if (string.IsNullOrWhiteSpace(cnhImage))
-                return null;
-
             if (cnhImage.StartsWith("data:image/png;base64,") ||
                 cnhImage.StartsWith("iVBORw0KGgo"))
                 return ".png";
@@ -118,7 +128,7 @@ namespace DeliveryManService.Application.Handlers
                 cnhImage.StartsWith("Qk"))
                 return ".bmp";
 
-            return null;
+            return string.Empty;
         }
 
         private async Task<bool> ExistsIdAsync(string id)

@@ -8,7 +8,7 @@ using Shared.ServiceContext;
 
 namespace MotorcycleService.Application.Handlers
 {
-    public class GetMotorcycleByIdHandler : IRequestHandler<GetMotorcycleByIdQuery, MotorcycleResponse>
+    public class GetMotorcycleByIdHandler : IRequestHandler<GetMotorcycleByIdQuery, MotorcycleResponse?>
     {
         private readonly IMotorcycleRepository _motorcycleRepository;
         private readonly IAppLogger _logger;
@@ -24,7 +24,7 @@ namespace MotorcycleService.Application.Handlers
             _serviceContext = serviceContext;
         }
 
-        public async Task<MotorcycleResponse> Handle(GetMotorcycleByIdQuery request, CancellationToken cancellationToken)
+        public async Task<MotorcycleResponse?> Handle(GetMotorcycleByIdQuery request, CancellationToken cancellationToken)
         {
             try
             {
@@ -33,7 +33,7 @@ namespace MotorcycleService.Application.Handlers
             }
             catch (Exception ex)
             {
-                var msg = $"Ocorreu um erro ao consultar motos por Id";
+                var msg = $"Ocorreu um erro ao consultar Motos com ID {request.Id}";
                 _logger.LogError(ex, msg);
                 _serviceContext.AddNotification(msg);
                 return null;

@@ -23,24 +23,21 @@ namespace MotorcycleService.Api.EventBusConsumer
         {
             try
             {
-                _logger.LogInformation($"Consumidor do Evento Cadastrar Moto inicidado para o Id {context.Message.Id}");
+                _logger.LogInformation($"Consumidor do Evento Cadastrar Moto inicidado para o ID {context.Message.Id}");
 
                 if (context.Message.Year == 2024)
                 {
-                    var msg = $"Foi cadastrada uma moto Ano 2024 com o Id {context.Message.Id}";
-                    _logger.LogInformation(msg);
-
-                    var createNotificationCommand = new CreateNotificationCommand(msg);
+                    var createNotificationCommand = new CreateNotificationCommand($"Foi cadastrada uma moto Ano 2024 com o ID {context.Message.Id}");
                     await _mediator.Send(createNotificationCommand);
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Ocorreu um erro ao consumir Evento Cadastar Moto para o Id {context.Message.Id}");
+                _logger.LogError(ex, $"Ocorreu um erro no consumidor do Evento Cadastar Moto para o ID {context.Message.Id}");
             }
             finally
             {
-                _logger.LogInformation($"Consumidor do Evento Cadastrar Moto finalizado para o Id {context.Message.Id}");
+                _logger.LogInformation($"Consumidor do Evento Cadastrar Moto finalizado para o ID {context.Message.Id}");
             }
         }
     }

@@ -43,21 +43,21 @@ namespace RentService.Application.Handlers
                     return false;
 
                 var rent = await _rentRepository.GetAsync(request.Id!);
-                var dailyValue = CalculateAndGetDailyValue((DateTime)request.ReturnDate!, rent!);
-                rent!.SetReturn((DateTime)request.ReturnDate!, dailyValue);
+                var dailyValue = CalculateAndGetDailyValue(request.ReturnDate, rent!);
+                rent!.SetReturn(request.ReturnDate, dailyValue);
 
                 if (!await _rentRepository.UpdateAsync(rent!))
                 {
-                    _serviceContext.AddNotification($"Não foi possível atualizar a locação Id {request.Id}");
+                    _serviceContext.AddNotification($"Não foi possível atualizar a locação ID {request.Id}");
                     return false;
                 }
 
-                _logger.LogInformation($"Locação Id {request.Id} data de devolução atualizada e valor calculado");
+                _logger.LogInformation($"Data de devolução atualizada e valor calculado para Locação ID {request.Id} ");
                 return true;
             }
             catch (Exception ex)
             {
-                var msg = $"Ocorreu um erro ao informar a data de devolução e calcular o valor para a locação Id {request.Id}";
+                var msg = $"Ocorreu um erro ao informar a data de devolução e calcular o valor para a locação ID {request.Id}";
                 _logger.LogError(ex, msg);
                 _serviceContext.AddNotification(msg);
                 return false;
@@ -71,7 +71,7 @@ namespace RentService.Application.Handlers
             else if (!await ExistsIdAsync(request.Id))
                 _serviceContext.AddNotification($"A locação id {request.Id} não existe");
 
-            if (!request.ReturnDate.HasValue)
+            if (request.ReturnDate == default)
                 _serviceContext.AddNotification("Informe a data de devolução");
 
             return !_serviceContext.HasNotification();
@@ -96,7 +96,7 @@ namespace RentService.Application.Handlers
                 RentPlan.Thirty => 22,
                 RentPlan.FortyFive => 20,
                 RentPlan.Fifty => 18,
-                _ => throw new InvalidOperationException("Plano inválido.")
+                _ => throw new InvalidOperationException($"Plano inválido para locação ID {rent.Id}")
             };
 
             int dailyValue = daysRented * dailyRate;

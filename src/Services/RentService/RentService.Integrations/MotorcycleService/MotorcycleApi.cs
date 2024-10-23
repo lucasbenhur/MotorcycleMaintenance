@@ -2,6 +2,7 @@
 using RentService.Core.Dtos;
 using RentService.Core.Integrations;
 using Shared.AppLog.Services;
+using Shared.ServiceContext;
 using System.Text.Json;
 
 namespace RentService.Integrations.MotorcycleService
@@ -10,18 +11,21 @@ namespace RentService.Integrations.MotorcycleService
     {
         private readonly HttpClient _httpClient;
         private readonly IAppLogger _logger;
+        private readonly IServiceContext _serviceContext;
 
         public MotorcycleApi(
             IConfiguration configuration,
-            IAppLogger logger)
+            IAppLogger logger,
+            IServiceContext serviceContext)
         {
-            var baseUri = configuration["ServicesSettings:Motorcycle:BaseUri"] ?? "";
+            var baseUri = configuration["ServicesSettings:Motorcycle:BaseUri"] ?? string.Empty;
             _httpClient = new()
             {
                 BaseAddress = new Uri(baseUri)
             };
 
             _logger = logger;
+            _serviceContext = serviceContext;
         }
 
         public async Task<MotorcycleDto?> GetAsync(string id)
@@ -33,6 +37,9 @@ namespace RentService.Integrations.MotorcycleService
 #else
                 var response = await _httpClient.GetAsync($"/{id}");
 #endif
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    return null;
+
                 response.EnsureSuccessStatusCode();
                 string responseData = await response.Content.ReadAsStringAsync();
                 var motorcycle = JsonSerializer.Deserialize<MotorcycleDto>(responseData);
@@ -40,7 +47,9 @@ namespace RentService.Integrations.MotorcycleService
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao fazer uma requisição para MotorcycleApi");
+                var msg = "Não foi possível se comunicar com a API de motos";
+                _logger.LogError(ex, msg);
+                _serviceContext.AddNotification(msg);
                 return null;
             }
         }

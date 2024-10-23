@@ -14,7 +14,7 @@ using Shared.ServiceContext;
 
 namespace MotorcycleService.Application.Handlers
 {
-    public class CreateMotorcycleCommandHandler : IRequestHandler<CreateMotorcycleCommand, MotorcycleResponse>
+    public class CreateMotorcycleCommandHandler : IRequestHandler<CreateMotorcycleCommand, MotorcycleResponse?>
     {
         private readonly IMotorcycleRepository _motorcycleRepository;
         private readonly IAppLogger _logger;
@@ -36,7 +36,7 @@ namespace MotorcycleService.Application.Handlers
             _publishEndpoint = publishEndpoint;
         }
 
-        public async Task<MotorcycleResponse> Handle(CreateMotorcycleCommand request, CancellationToken cancellationToken)
+        public async Task<MotorcycleResponse?> Handle(CreateMotorcycleCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -46,7 +46,7 @@ namespace MotorcycleService.Application.Handlers
                 var motorcycleEntity = MotorcycleMapper.Mapper.Map<Motorcycle>(request);
                 var newMotorcycle = await _motorcycleRepository.CreateAsync(motorcycleEntity);
 
-                _logger.LogInformation($"Moto Id {newMotorcycle.Id} cadastrada");
+                _logger.LogInformation($"Moto ID {newMotorcycle.Id} cadastrada");
 
                 var createMotorcycleEventMsg = MotorcycleMapper.Mapper.Map<CreateMotorcycleEvent>(newMotorcycle);
                 await _publishEndpoint.Publish(createMotorcycleEventMsg);
@@ -55,7 +55,7 @@ namespace MotorcycleService.Application.Handlers
             }
             catch (Exception ex)
             {
-                var msg = $"Ocorreu um erro ao cadastrar a Moto Id {request.Id}";
+                var msg = $"Ocorreu um erro ao cadastrar a Moto ID {request.Id}";
                 _logger.LogError(ex, msg);
                 _serviceContext.AddNotification(msg);
                 return null;
@@ -69,9 +69,9 @@ namespace MotorcycleService.Application.Handlers
             else if (await ExistsIdAsync(request.Id))
                 _serviceContext.AddNotification($"O identificador {request.Id} já existe");
 
-            if (!request.Year.HasValue)
+            if (request.Year == 0)
                 _serviceContext.AddNotification("O campo ano é obrigatório");
-            else if (request.Year.GetValueOrDefault() <= 0)
+            else if (request.Year < 0)
                 _serviceContext.AddNotification("Informe um ano válido!");
 
             if (string.IsNullOrWhiteSpace(request.Model))

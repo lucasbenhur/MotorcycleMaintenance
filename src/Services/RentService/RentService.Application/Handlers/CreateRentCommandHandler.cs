@@ -46,13 +46,13 @@ namespace RentService.Application.Handlers
                 var rentEntity = RentMapper.Mapper.Map<Rent>(request);
                 var newRent = await _rentRepository.CreateAsync(rentEntity);
 
-                _logger.LogInformation($"Locação Id {newRent.Id} cadastrada para MotoId {newRent.MotorcycleId} e EntregadorId {newRent.MotorcycleId}");
+                _logger.LogInformation($"Cadastrada Locação ID {newRent.Id} para Moto ID {newRent.MotorcycleId} e Entregador ID {newRent.MotorcycleId}");
 
                 return RentMapper.Mapper.Map<RentResponse>(newRent);
             }
             catch (Exception ex)
             {
-                var msg = $"Ocorreu um erro ao cadastrar a locação para MotoId {request.MotorcycleId} EntregadorId {request.DeliveryManId}";
+                var msg = $"Ocorreu um erro ao cadastrar a Locação para Moto ID {request.MotorcycleId} Entregador ID {request.DeliveryManId}";
                 _logger.LogError(ex, msg);
                 _serviceContext.AddNotification(msg);
                 return null;
@@ -63,44 +63,44 @@ namespace RentService.Application.Handlers
         {
             var today = DateTime.Now;
 
-            if (!request.Plan.HasValue)
+            if (request.Plan == default)
                 _serviceContext.AddNotification("Nenhum plano foi escolhido");
             else if (!Enum.IsDefined(typeof(RentPlan), request.Plan))
                 _serviceContext.AddNotification("O plano escolhido não é válido");
 
-            if (!request.StartDate.HasValue)
+            if (request.StartDate == default)
                 _serviceContext.AddNotification("O campo data_inicio é obrigatório");
-            else if (today.AddDays(1).Date != request.StartDate.Value.Date)
+            else if (today.AddDays(1).Date != request.StartDate.Date)
                 _serviceContext.AddNotification("A data_inicio deve ser o primeiro dia após a data da locação");
 
-            if (!request.EndDate.HasValue)
+            if (request.EndDate == default)
                 _serviceContext.AddNotification("O campo data_termino é obrigatório");
 
-            if (!request.EstimatedEndDate.HasValue)
+            if (request.EstimatedEndDate == default)
                 _serviceContext.AddNotification("O campo data_previsao_termino é obrigatório");
 
             if (string.IsNullOrWhiteSpace(request.DeliveryManId))
                 _serviceContext.AddNotification("O campo entregador_id deve ser informado");
-            else if (!await ExistsDeliveryManAsync(request.DeliveryManId!))
+            else if (!await ExistsDeliveryManAsync(request.DeliveryManId))
                 _serviceContext.AddNotification($"O entregador_id {request.DeliveryManId} não existe");
-            else if (!(await GetDeliveryManCnhTypeAsync(request.DeliveryManId!)).Contains("A"))
+            else if (!(await GetDeliveryManCnhTypeAsync(request.DeliveryManId)).Contains("A"))
                 _serviceContext.AddNotification("O entregador precisa ter CNH com categoria A");
 
             if (string.IsNullOrWhiteSpace(request.MotorcycleId))
                 _serviceContext.AddNotification("O campo moto_id deve ser informado");
-            else if (!(await ExistsMotorcycleAsync(request.MotorcycleId!)))
+            else if (!(await ExistsMotorcycleAsync(request.MotorcycleId)))
                 _serviceContext.AddNotification($"A moto_id {request.MotorcycleId} não existe");
 
             return !_serviceContext.HasNotification();
         }
 
         private async Task<bool> ExistsDeliveryManAsync(string deliveryManId) =>
-             !string.IsNullOrEmpty((await _deliveryManApi.GetAsync(deliveryManId!))?.Id);
+             !string.IsNullOrWhiteSpace((await _deliveryManApi.GetAsync(deliveryManId))?.Id);
 
         private async Task<string> GetDeliveryManCnhTypeAsync(string deliveryManId) =>
-            (await _deliveryManApi.GetAsync(deliveryManId))?.CnhType ?? "";
+            (await _deliveryManApi.GetAsync(deliveryManId))?.CnhType ?? string.Empty;
 
         private async Task<bool> ExistsMotorcycleAsync(string motorcycleId) =>
-             !string.IsNullOrEmpty((await _motorcycleApi.GetAsync(motorcycleId!))?.Id);
+             !string.IsNullOrWhiteSpace((await _motorcycleApi.GetAsync(motorcycleId))?.Id);
     }
 }

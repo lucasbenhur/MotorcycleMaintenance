@@ -7,7 +7,7 @@ namespace Shared.AppLog.Extensions
 {
     public static class ServiceRegistration
     {
-        public static void AddAppLogServices(this IServiceCollection services)
+        public static void AddLogServices(this IServiceCollection services)
         {
             services.AddScoped<IAppLogDbContext, AppLogDbContext>();
             services.AddScoped<IAppLogRepository, AppLogRepository>();

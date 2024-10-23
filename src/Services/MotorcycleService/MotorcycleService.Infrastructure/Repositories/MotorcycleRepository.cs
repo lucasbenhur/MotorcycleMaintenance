@@ -21,7 +21,7 @@ namespace MotorcycleService.Infrastructure.Repositories
             return motorcycle;
         }
 
-        public async Task<Motorcycle> GetByPlateAsync(string plate)
+        public async Task<Motorcycle?> GetByPlateAsync(string plate)
         {
             if (string.IsNullOrWhiteSpace(plate))
                 return null;
@@ -32,7 +32,7 @@ namespace MotorcycleService.Infrastructure.Repositories
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<Motorcycle> GetAsync(string id)
+        public async Task<Motorcycle?> GetAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
                 return null;

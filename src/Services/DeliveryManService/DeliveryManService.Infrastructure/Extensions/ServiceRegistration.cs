@@ -2,7 +2,6 @@
 using DeliveryManService.Infrastructure.Data;
 using DeliveryManService.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
-using Shared.ServiceContext;
 
 namespace DeliveryManService.Infrastructure.Extensions
 {
@@ -10,7 +9,6 @@ namespace DeliveryManService.Infrastructure.Extensions
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         {
-            services.AddScoped<IServiceContext, ServiceContext>();
             services.AddScoped<IDeliveryManDbContext, DeliveryManDbContext>();
             services.AddScoped<IDeliveryManRepository, DeliveryManRepository>();
 

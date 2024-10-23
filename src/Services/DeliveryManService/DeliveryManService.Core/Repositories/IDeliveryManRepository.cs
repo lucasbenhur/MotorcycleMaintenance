@@ -8,6 +8,6 @@ namespace DeliveryManService.Core.Repositories
         Task<DeliveryMan> CreateAsync(DeliveryMan deliveryMan);
         Task<ICollection<DeliveryMan>> GetAllAsync(GetAllDeliveryMenSpecParams specParams);
         Task<bool> UpdateAsync(DeliveryMan deliveryMan);
-        Task<DeliveryMan> GetAsync(string id);
+        Task<DeliveryMan?> GetAsync(string id);
     }
 }

@@ -14,4 +14,8 @@
     <PackageReference Include="Ocelot" Version="23.3.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\Shared\Shared.csproj" />
+  </ItemGroup>
+
 </Project>

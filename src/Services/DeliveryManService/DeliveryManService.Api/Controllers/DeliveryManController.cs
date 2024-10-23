@@ -39,7 +39,7 @@ namespace DeliveryManService.Api.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Create([FromBody] CreateDeliveryManCommand? createDeliveryManCommand)
+        public async Task<IActionResult> Create([FromBody] CreateDeliveryManCommand createDeliveryManCommand)
         {
             if (createDeliveryManCommand is null)
                 return BadRequest(new MessageResponse());
@@ -56,7 +56,7 @@ namespace DeliveryManService.Api.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Update([FromRoute] string id, [FromBody] UpdateDeliveryManCommand? updateDeliveryManCommand)
+        public async Task<IActionResult> Update([FromRoute] string id, [FromBody] UpdateDeliveryManCommand updateDeliveryManCommand)
         {
             if (updateDeliveryManCommand is null)
                 return BadRequest(new MessageResponse());

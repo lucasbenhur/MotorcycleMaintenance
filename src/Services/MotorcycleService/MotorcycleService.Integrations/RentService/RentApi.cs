@@ -2,6 +2,7 @@
 using MotorcycleService.Core.Dtos;
 using MotorcycleService.Core.Integrations;
 using Shared.AppLog.Services;
+using Shared.ServiceContext;
 using System.Text.Json;
 
 namespace MotorcycleService.Integrations.RentService
@@ -10,10 +11,12 @@ namespace MotorcycleService.Integrations.RentService
     {
         private readonly HttpClient _httpClient;
         private readonly IAppLogger _logger;
+        private readonly IServiceContext _serviceContext;
 
         public RentApi(
             IConfiguration configuration,
-            IAppLogger logger)
+            IAppLogger logger,
+            IServiceContext serviceContext)
         {
             var baseUri = configuration["ServicesSettings:Rent:BaseUri"] ?? "";
             _httpClient = new()
@@ -22,6 +25,7 @@ namespace MotorcycleService.Integrations.RentService
             };
 
             _logger = logger;
+            _serviceContext = serviceContext;
         }
 
         public async Task<RentDto?> GetByMotorcycleIdAsync(string motoId)
@@ -33,6 +37,9 @@ namespace MotorcycleService.Integrations.RentService
 #else
                 var response = await _httpClient.GetAsync($"/{motoId}/moto");
 #endif
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    return null;
+
                 response.EnsureSuccessStatusCode();
                 string responseData = await response.Content.ReadAsStringAsync();
                 var rent = JsonSerializer.Deserialize<RentDto>(responseData);
@@ -40,7 +47,9 @@ namespace MotorcycleService.Integrations.RentService
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao fazer uma requisição para RentApi");
+                var msg = "Não foi possível se comunicar com a API de locação";
+                _logger.LogError(ex, msg);
+                _serviceContext.AddNotification(msg);
                 return null;
             }
         }

@@ -38,7 +38,7 @@ namespace RentService.Api.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> RentMotorcycle([FromBody] CreateRentCommand? createRentCommand)
+        public async Task<IActionResult> Create([FromBody] CreateRentCommand createRentCommand)
         {
             if (createRentCommand is null)
                 return BadRequest(new MessageResponse());
@@ -100,7 +100,7 @@ namespace RentService.Api.Controllers
         [Produces("application/json")]
         [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Return([FromRoute] string id, [FromBody] ReturnRentCommand? returnRentCommand)
+        public async Task<IActionResult> Return([FromRoute] string id, [FromBody] ReturnRentCommand returnRentCommand)
         {
             if (returnRentCommand is null)
                 return BadRequest(new MessageResponse());

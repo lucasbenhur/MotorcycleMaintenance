@@ -8,10 +8,11 @@ namespace MotorcycleService.Application.Commands
         [JsonIgnore]
         public string? Id { get; set; }
 
-        private string? _plate { get; set; }
+        private string _plate { get; set; } = null!;
 
+        [JsonRequired]
         [JsonPropertyName("placa")]
-        public string? Plate
+        public string Plate
         {
             get
             {
@@ -19,7 +20,7 @@ namespace MotorcycleService.Application.Commands
             }
             set
             {
-                _plate = value?.ToUpper();
+                _plate = value.ToUpper();
             }
         }
     }

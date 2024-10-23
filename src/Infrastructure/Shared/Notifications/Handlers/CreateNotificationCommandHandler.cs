@@ -7,7 +7,7 @@ using Shared.Notifications.Responses;
 
 namespace Shared.Notifications.Handlers
 {
-    public class CreateNotificationCommandHandler : IRequestHandler<CreateNotificationCommand, NotificationResponse>
+    public class CreateNotificationCommandHandler : IRequestHandler<CreateNotificationCommand, NotificationResponse?>
     {
         private readonly INotificationRepository _notificationRepository;
         private readonly IAppLogger _logger;
@@ -20,13 +20,13 @@ namespace Shared.Notifications.Handlers
             _logger = logger;
         }
 
-        public async Task<NotificationResponse> Handle(CreateNotificationCommand request, CancellationToken cancellationToken)
+        public async Task<NotificationResponse?> Handle(CreateNotificationCommand request, CancellationToken cancellationToken)
         {
             try
             {
                 var notificationEntity = new Notification(request.Message);
                 var newNotification = await _notificationRepository.CreateAsync(notificationEntity);
-                _logger.LogInformation($"Notificação armazenada no banco de dados para consulta futura com Id {newNotification.Id}");
+                _logger.LogInformation($"Notificação armazenada no banco de dados para consulta futura com ID {newNotification.Id}");
                 return new NotificationResponse(newNotification.Id.ToString(), newNotification.Message);
             }
             catch (Exception ex)

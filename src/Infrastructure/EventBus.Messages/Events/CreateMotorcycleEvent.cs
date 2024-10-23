@@ -2,9 +2,7 @@
 {
     public class CreateMotorcycleEvent : BaseIntegrationEvent
     {
-        public string Id { get; set; }
+        public string Id { get; set; } = null!;
         public int Year { get; set; }
-        public string Model { get; set; }
-        public string Plate { get; set; }
     }
 }

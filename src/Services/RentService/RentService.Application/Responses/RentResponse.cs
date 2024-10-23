@@ -5,16 +5,16 @@ namespace RentService.Application.Responses
     public class RentResponse
     {
         [JsonPropertyName("identificador")]
-        public string Id { get; set; }
+        public string Id { get; set; } = null!;
 
         [JsonPropertyName("valor_diaria")]
-        public int? DailyValue { get; set; } = null!;
+        public int? DailyValue { get; set; }
 
         [JsonPropertyName("entregador_id")]
-        public string DeliveryManId { get; set; }
+        public string DeliveryManId { get; set; } = null!;
 
         [JsonPropertyName("moto_id")]
-        public string MotorcycleId { get; set; }
+        public string MotorcycleId { get; set; } = null!;
 
         [JsonPropertyName("data_inicio")]
         public DateTime StartDate { get; set; }

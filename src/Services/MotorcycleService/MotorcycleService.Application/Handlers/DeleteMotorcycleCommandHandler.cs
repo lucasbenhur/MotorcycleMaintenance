@@ -37,39 +37,41 @@ namespace MotorcycleService.Application.Handlers
         {
             try
             {
-                var motorcycle = await _motorcycleRepository.GetAsync(request.Id);
-
-                if (motorcycle is null)
-                {
-                    _serviceContext.AddNotification($"A moto_id {request.Id} não existe");
+                if (!await IsValidAsync(request))
                     return false;
-                }
-
-                if (await ExistRentAsync(request.Id))
-                {
-                    _serviceContext.AddNotification($"Existe registro de locação para a moto_id {request.Id}");
-                    return false;
-                }
 
                 if (!await _motorcycleRepository.DeleteAsync(request.Id))
                 {
-                    _serviceContext.AddNotification($"Não foi possível remover a Moto Id {request.Id}");
+                    _serviceContext.AddNotification($"Não foi possível remover a Moto ID {request.Id}");
                     return false;
                 }
 
-                _logger.LogInformation($"Moto Id {motorcycle.Id} removida");
+                _logger.LogInformation($"Moto ID {request.Id} removida");
                 return true;
             }
             catch (Exception ex)
             {
-                var msg = $"Ocorreu um erro ao remover a Moto Id {request.Id}";
+                var msg = $"Ocorreu um erro ao remover a Moto ID {request.Id}";
                 _logger.LogError(ex, msg);
                 _serviceContext.AddNotification(msg);
                 return false;
             }
         }
 
-        public async Task<bool> ExistRentAsync(string motorcycleId) =>
-            !string.IsNullOrEmpty((await _rentApi.GetByMotorcycleIdAsync(motorcycleId!))?.Id);
+        private async Task<bool> IsValidAsync(DeleteMotorcycleCommand request)
+        {
+            var motorcycle = await _motorcycleRepository.GetAsync(request.Id);
+
+            if (motorcycle is null)
+                _serviceContext.AddNotification($"A moto ID {request.Id} não existe");
+
+            if (await ExistRentAsync(request.Id))
+                _serviceContext.AddNotification($"Existe registro de locação para a moto ID {request.Id}");
+
+            return !_serviceContext.HasNotification();
+        }
+
+        private async Task<bool> ExistRentAsync(string motorcycleId) =>
+            !string.IsNullOrWhiteSpace((await _rentApi.GetByMotorcycleIdAsync(motorcycleId!))?.Id);
     }
 }

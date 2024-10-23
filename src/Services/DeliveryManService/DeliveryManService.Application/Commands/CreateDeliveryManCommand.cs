@@ -5,25 +5,32 @@ namespace DeliveryManService.Application.Commands
 {
     public class CreateDeliveryManCommand : IRequest<bool>
     {
+        [JsonRequired]
         [JsonPropertyName("identificador")]
-        public string? Id { get; set; }
+        public string Id { get; set; } = null!;
 
+        [JsonRequired]
         [JsonPropertyName("nome")]
-        public string? Name { get; set; }
+        public string Name { get; set; } = null!;
 
+        [JsonRequired]
         [JsonPropertyName("cnpj")]
-        public string? Cnpj { get; set; }
+        public string Cnpj { get; set; } = null!;
 
+        [JsonRequired]
         [JsonPropertyName("data_nascimento")]
-        public DateTime? BirthDate { get; set; }
+        public DateTime BirthDate { get; set; }
 
+        [JsonRequired]
         [JsonPropertyName("numero_cnh")]
-        public string? CnhNumber { get; set; }
+        public string CnhNumber { get; set; } = null!;
 
-        private string? _cnhType { get; set; }
+        [JsonIgnore]
+        private string _cnhType { get; set; } = null!;
 
+        [JsonRequired]
         [JsonPropertyName("tipo_cnh")]
-        public string? CnhType
+        public string CnhType
         {
             get
             {
@@ -31,13 +38,14 @@ namespace DeliveryManService.Application.Commands
             }
             set
             {
-                _cnhType = value?
-                    .Replace("+", "")?
+                _cnhType = value
+                    .Replace("+", "")
                     .ToUpper();
             }
         }
 
+        [JsonRequired]
         [JsonPropertyName("imagem_cnh")]
-        public string? CnhImage { get; set; }
+        public string CnhImage { get; set; } = null!;
     }
 }

@@ -8,7 +8,7 @@ namespace DeliveryManService.Application.Mappers
         {
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.ShouldMapProperty = p => p.GetMethod.IsPublic || p.GetMethod.IsAssembly;
+                cfg.ShouldMapProperty = p => p.GetMethod!.IsPublic || p.GetMethod!.IsAssembly;
                 cfg.AddProfile<DeliveryManMappingProfile>();
             });
             var mapper = config.CreateMapper();

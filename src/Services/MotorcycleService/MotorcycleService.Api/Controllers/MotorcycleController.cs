@@ -40,7 +40,7 @@ namespace MotorcycleService.Api.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Create([FromBody] CreateMotorcycleCommand? createMotorcycleCommand)
+        public async Task<IActionResult> Create([FromBody] CreateMotorcycleCommand createMotorcycleCommand)
         {
             if (createMotorcycleCommand is null)
                 return BadRequest(new MessageResponse());
@@ -70,7 +70,7 @@ namespace MotorcycleService.Api.Controllers
         [Produces("application/json")]
         [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Update([FromRoute] string id, [FromBody] UpdateMotorcycleCommand? updateMotorcycleCommand)
+        public async Task<IActionResult> Update([FromRoute] string id, [FromBody] UpdateMotorcycleCommand updateMotorcycleCommand)
         {
             if (updateMotorcycleCommand is null)
                 return BadRequest(new MessageResponse());
@@ -99,7 +99,7 @@ namespace MotorcycleService.Api.Controllers
                 return BadRequest(new MessageResponse(_serviceContext.Notification));
 
             if (motorcycle is null)
-                return NotFound(new MessageResponse("Moto não encontrada"));
+                return NotFound(new MessageResponse($"A moto id {id} não existe"));
 
             return Ok(motorcycle);
         }

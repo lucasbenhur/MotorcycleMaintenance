@@ -8,7 +8,7 @@ namespace MotorcycleService.Application.Mappers
         {
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.ShouldMapProperty = p => p.GetMethod.IsPublic || p.GetMethod.IsAssembly;
+                cfg.ShouldMapProperty = p => p.GetMethod!.IsPublic || p.GetMethod.IsAssembly;
                 cfg.AddProfile<MotorcycleMappingProfile>();
             });
             var mapper = config.CreateMapper();

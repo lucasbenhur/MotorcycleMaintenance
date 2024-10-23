@@ -46,12 +46,12 @@ namespace DeliveryManService.Application.Handlers
 
                 var deliveryManEntity = DeliveryManMapper.Mapper.Map<DeliveryMan>(request);
                 await _deliveryManRepository.CreateAsync(deliveryManEntity);
-                _logger.LogInformation($"Entregador cadastrado com Id {request.Id}");
+                _logger.LogInformation($"Entregador cadastrado com ID {request.Id}");
                 return true;
             }
             catch (Exception ex)
             {
-                var msg = $"Ocorreu um erro ao cadastrar o entregador Id {request.Id}";
+                var msg = $"Ocorreu um erro ao cadastrar o entregador ID {request.Id}";
                 _logger.LogError(ex, msg);
                 _serviceContext.AddNotification(msg);
                 return false;
@@ -77,7 +77,7 @@ namespace DeliveryManService.Application.Handlers
             else if (await ExistsCnpjAsync(request.Cnpj))
                 _serviceContext.AddNotification($"O cnpj {request.Cnpj} já existe");
 
-            if (request.BirthDate is null)
+            if (request.BirthDate == default)
                 _serviceContext.AddNotification("O campo data_nascimento é obrigatório");
 
             if (string.IsNullOrWhiteSpace(request.CnhNumber))
@@ -92,7 +92,7 @@ namespace DeliveryManService.Application.Handlers
             else if (request.CnhType.ToUpper() != "A" && request.CnhType.ToUpper() != "B" && request.CnhType.ToUpper() != "AB")
                 _serviceContext.AddNotification("O campo tipo_cnh é inválido. Os valores permitidos são A, B, ou ambas A+B");
 
-            if (string.IsNullOrEmpty(request.CnhImage))
+            if (string.IsNullOrWhiteSpace(request.CnhImage))
                 _serviceContext.AddNotification("O campo imagem_cnh é obrigatório");
             else if (!IsValidCnhImageExtension(request.CnhImage))
                 _serviceContext.AddNotification("Extensão do arquivo no campo imagem_cnh é inválido. São permitidos apenas .png e .bmp");
@@ -121,9 +121,7 @@ namespace DeliveryManService.Application.Handlers
                 var directory = Path.GetDirectoryName(filePath);
 
                 if (!Directory.Exists(directory))
-                {
-                    Directory.CreateDirectory(directory);
-                }
+                    Directory.CreateDirectory(directory!);
 
                 byte[] imageBytes = Convert.FromBase64String(cnhImage);
                 await File.WriteAllBytesAsync(filePath, imageBytes);
@@ -139,9 +137,6 @@ namespace DeliveryManService.Application.Handlers
 
         private string GetCnhImageExtension(string cnhImage)
         {
-            if (string.IsNullOrWhiteSpace(cnhImage))
-                return null;
-
             if (cnhImage.StartsWith("data:image/png;base64,") ||
                 cnhImage.StartsWith("iVBORw0KGgo"))
                 return ".png";
@@ -150,7 +145,7 @@ namespace DeliveryManService.Application.Handlers
                 cnhImage.StartsWith("Qk"))
                 return ".bmp";
 
-            return null;
+            return string.Empty;
         }
 
         private async Task<bool> ExistsIdAsync(string id)
