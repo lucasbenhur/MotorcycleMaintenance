@@ -8,7 +8,7 @@ Sistema de Manutenção de Motos
 Este projeto é uma aplicação baseada em microserviços desenvolvida em .NET Core 8.0, utilizando uma arquitetura limpa e boas práticas de design. A aplicação é composta por 3 microserviços, cada um responsável por uma funcionalidade específica, e um API Gateway Ocelot para roteamento de requisições.
 
 Os microsserviços são:
-- **Motos** - Cadastro de Motos, atualização da placa, consulta pela placa ou pelo Id, exclusão de Motos.
+- **Motos** - Cadastro de Motos, atualização da placa, consulta pela placa ou pelo Id ou todos e exclusão.
 - **Entregadores** - Cadastro de Entregadores e upload da foto da CNH.
 - **Locação** - Cadastro de locação e devolução de Motos para Entregadores, calculo do custo total do aluguel na devolução, consulta de locação pelo Id.
 
@@ -22,7 +22,7 @@ O projeto usa MongoDb com a estrutura de collections abaixo:
 
 ### Arquitetura
 
-![image](https://github.com/user-attachments/assets/1cec62a2-0118-4c21-a507-35ad02c66723)
+![image](https://github.com/user-attachments/assets/114413ec-5d8c-48d4-b0ed-a66b26497934)
 
 ### Componentes Principais
 
@@ -50,7 +50,7 @@ O projeto usa MongoDb com a estrutura de collections abaixo:
 - Clone esse repositório.
 - Abra o terminal na pasta raiz do repositório e execute o comando `docker-compose up --build -d` para compilar os projetos, publicá-los no docker e iniciar os containers.
 
-Após o comando executado com sucesso seu Docker terá a seguinte estrutura de containers:
+Após o comando executado com sucesso o Docker deverá ter a seguinte estrutura de containers:
 
 ![image](https://github.com/user-attachments/assets/c88f06d2-7563-476e-9dfe-f24f57b99a68)
 
@@ -88,7 +88,7 @@ Após o comando executado com sucesso seu Docker terá a seguinte estrutura de c
 
 - As imagens de CNH dos entregadores são armazenadas no disco local do container deliveryman-api:
 
-![image](https://github.com/user-attachments/assets/4078f55f-6f12-4440-8fa0-a9b10eef8be9)
+![image](https://github.com/user-attachments/assets/02ff3381-f2a0-4797-b0b8-0592d9daddc2)
 
 ### Requisitos
 
