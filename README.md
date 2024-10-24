@@ -10,13 +10,13 @@ Este projeto é uma aplicação baseada em microserviços desenvolvida em .NET C
 Os microsserviços são:
 - **Motos** - Cadastro de Motos, atualização da placa, consulta pela placa ou pelo Id ou todos e exclusão.
 - **Entregadores** - Cadastro de Entregadores e upload da foto da CNH.
-- **Locação** - Cadastro de locação e devolução de Motos para Entregadores, calculo do custo total do aluguel na devolução, consulta de locação pelo Id.
+- **Locação** - Cadastro de locação de Motos para Entregadores e devolução, calculo do custo total do aluguel na devolução, consulta de locação pelo Id.
 
 ## Domínio
 
 ### Banco De Dados
 
-O projeto utiliza MongoDb com a estrutura de collections abaixo:
+O projeto utiliza MongoDB com a estrutura de collections abaixo:
 
 ![image](https://github.com/user-attachments/assets/f6d43f48-83eb-4f54-9c37-2cdb0831115e)
 
@@ -32,7 +32,7 @@ O projeto utiliza MongoDb com a estrutura de collections abaixo:
    - **Motorcycle API**
    - **Rent API**
    - **DeliveryMan API**
-4. **MongoDB**: Utilizado para armazenar os dados das entidades e notificações.
+4. **MongoDB**: Utilizado para armazenar os dados das entidades, notificações e logs.
 5. **RabbitMQ**: Utilizado para comunicação de eventos.
 6. **Docker**: Os serviços são containerizados usando Docker.
 
