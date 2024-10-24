@@ -11,10 +11,6 @@ services:
       dockerfile: ./src/Gateway/GateWay.Api/Dockerfile
     ports:
       - "80:80"
-    depends_on:
-      - deliveryman-api
-      - motorcycle-api
-      - rent-api      
     restart: always
     networks:
       - motorcyclemaintenance
@@ -87,4 +83,4 @@ services:
 
 volumes:
   mongo_data:
-  cnh_image_data:    
+  cnh_image_data:
